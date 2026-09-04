@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varanasi Places to Visit | The Kashi Kunj</title>
+<meta name="theme-color" content="#e8900a">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <p>Most Trusted Stay, Cab & Boat Booking Partner in Varanasi &nbsp;|&nbsp; <a href="mailto:info@thekashikunj.com">info@thekashikunj.com</a></p>
+</header>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">The Kashi<span>Kunj</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#rooms">Stays</a></li>
+      <li><a href="index.html#cabs">Cab</a></li>
+      <li><a href="index.html#boats">Boat Ride</a></li>
+      <li><a href="places.html">Places to Visit</a></li>
+      <li><a href="index.html#contact" class="btn-nav">Book Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+  </div>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a> / <span>Places to Visit</span></div>
+
+<section class="section">
+  <p class="eyebrow">Explore Varanasi</p>
+  <h2>Varanasi Places to Visit</h2>
+  <p class="section-sub">Plan your trip around the ghats, temples & spiritual sites of Kashi</p>
+  <div class="attraction-grid" id="allPlacesGrid"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h3>The Kashi Kunj</h3>
+      <p>Near Assi Ghat, Varanasi, Uttar Pradesh</p>
+      <p>+91 90000 00000</p>
+      <p>info@thekashikunj.com</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="index.html#rooms">Stays</a><br>
+      <a href="index.html#cabs">Cab Booking</a><br>
+      <a href="index.html#boats">Boat Booking</a><br>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+  <p class="copyright">© The Kashi Kunj 2026. All Rights Reserved.</p>
+</footer>
+
+<a href="https://wa.me/916392658826" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="js/places-data.js"></script>
+<script>
+$(function () {
+  const $grid = $('#allPlacesGrid');
+  PLACES.forEach(p => {
+    $grid.append(`
+      <a class="attraction-card" href="place-detail.html?slug=${p.slug}">
+        <img src="${p.image}" alt="${p.name}">
+        <p>${p.name}</p>
+      </a>
+    `);
+  });
+  $('#hamburger').on('click', function () { $('.nav-links').toggleClass('open'); });
+});
+</script>
+</body>
+</html>

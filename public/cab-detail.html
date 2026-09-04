@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cab Details | The Kashi Kunj</title>
+<meta name="theme-color" content="#e8900a">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <p>Most Trusted Stay, Cab & Boat Booking Partner in Varanasi &nbsp;|&nbsp; <a href="mailto:info@thekashikunj.com">info@thekashikunj.com</a></p>
+</header>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">The Kashi<span>Kunj</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#rooms">Stays</a></li>
+      <li><a href="index.html#cabs">Cab</a></li>
+      <li><a href="index.html#boats">Boat Ride</a></li>
+      <li><a href="places.html">Places to Visit</a></li>
+      <li><a href="index.html#contact" class="btn-nav">Book Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+  </div>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="index.html#rooms">Stays</a> / <span>Cab Details</span></div>
+
+<section class="section detail-section" id="detailContent">
+  <p class="loading">Loading cab details...</p>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h3>The Kashi Kunj</h3>
+      <p>Near Assi Ghat, Varanasi, Uttar Pradesh</p>
+      <p>+91 90000 00000</p>
+      <p>info@thekashikunj.com</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="index.html#rooms">Stays</a><br>
+      <a href="index.html#cabs">Cab Booking</a><br>
+      <a href="index.html#boats">Boat Booking</a><br>
+      <a href="places.html">Places to Visit</a><br>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+  <p class="copyright">© The Kashi Kunj 2026. All Rights Reserved.</p>
+</footer>
+
+<a href="https://wa.me/916392658826" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="js/detail.js"></script>
+<script>loadItemDetail('cab');</script>
+<script>$('#hamburger').on('click', function () { $('.nav-links').toggleClass('open'); });</script>
+</body>
+</html>
