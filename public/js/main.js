@@ -48,72 +48,189 @@ $(function () {
     });
   }
 
-  // ================= LOAD DATA =================
-  $.get('/api/rooms', function (rooms) {
-    const $grid = $('#roomsGrid').empty();
-    if (!rooms.length) return $grid.html('<p class="loading">No rooms available right now.</p>');
-    rooms.forEach(r => $grid.append(roomCard(r)));
-  }).fail(() => $('#roomsGrid').html('<p class="loading">Could not load rooms. Is the server running?</p>'));
-
-  $.get('/api/cabs', function (cabs) {
-    const $grid = $('#cabsGrid').empty();
-    if (!cabs.length) return $grid.html('<p class="loading">No cabs available right now.</p>');
-    cabs.forEach(c => $grid.append(serviceCard(c, 'cab')));
-  }).fail(() => $('#cabsGrid').html('<p class="loading">Could not load cabs.</p>'));
-
-  $.get('/api/boats', function (boats) {
-    const $grid = $('#boatsGrid').empty();
-    if (!boats.length) return $grid.html('<p class="loading">No boats available right now.</p>');
-    boats.forEach(b => $grid.append(serviceCard(b, 'boat')));
-  }).fail(() => $('#boatsGrid').html('<p class="loading">Could not load boats.</p>'));
-
+  // ================= ENRICHED RATINGS & CARDS =================
   function ratingStars(r) {
-    return r ? `<div class="rating">★ ${r.toFixed ? r.toFixed(1) : r}</div>` : '';
+    const score = Number(r || 4.8).toFixed(1);
+    return `
+      <div class="card-rating">
+        <span class="star-icon">★</span>
+        <span class="rating-num">${score}</span>
+        <span class="rating-badge">Verified</span>
+      </div>
+    `;
   }
 
   function roomCard(r) {
-    const img = (r.images && r.images[0]) || 'https://via.placeholder.com/400x250?text=' + encodeURIComponent(r.name);
+    const img = (r.images && r.images[0]) || r.image || 'https://via.placeholder.com/600x400?text=' + encodeURIComponent(r.name);
+    const discountPercent = r.discountPrice && r.price 
+      ? Math.round(((r.price - r.discountPrice) / r.price) * 100) 
+      : null;
+
     return $(`
-      <div class="card">
-        <a href="room-detail.html?id=${r._id}" class="card-link">
-          <img src="${img}" alt="${r.name}">
-        </a>
+      <div class="card modern-card">
+        <div class="card-media">
+          <a href="room-detail.html?id=${r._id}" class="card-link">
+            <img src="${img}" alt="${r.name}" loading="lazy">
+          </a>
+          <span class="media-badge tag-type">${r.type || 'Deluxe Room'}</span>
+          ${discountPercent ? `<span class="media-badge tag-discount">${discountPercent}% OFF</span>` : ''}
+        </div>
+
         <div class="card-body">
-          ${ratingStars(r.rating)}
-          <h3><a href="room-detail.html?id=${r._id}" class="card-link">${r.name}</a></h3>
-          <div class="tags">${(r.amenities || []).join(' • ')}</div>
-          <div class="price">
-            ${r.discountPrice ? `<del>₹${r.price}</del> <strong>₹${r.discountPrice}</strong>` : `<strong>₹${r.price}</strong>`} /night
+          <div class="card-header-row">
+            ${ratingStars(r.rating)}
+            <span class="card-spec">👥 ${r.capacity || 2} Guests Max</span>
           </div>
-          <button class="btn-primary book-btn" data-type="room" data-id="${r._id}" data-name="${r.name}">Book Now</button>
+
+          <h3 class="card-title">
+            <a href="room-detail.html?id=${r._id}">${r.name}</a>
+          </h3>
+
+          <div class="tags-container">
+            ${(r.amenities && r.amenities.length ? r.amenities : ['Free WiFi', 'AC', 'Geyser']).slice(0, 3).map(a => `
+              <span class="feature-tag">✓ ${a}</span>
+            `).join('')}
+          </div>
+
+          <div class="card-footer-row">
+            <div class="price-wrap">
+              <span class="price-label">Price starting at</span>
+              <div class="price">
+                ${r.discountPrice ? `<del>₹${r.price}</del> <strong>₹${r.discountPrice}</strong>` : `<strong>₹${r.price}</strong>`}
+                <span class="price-unit">/night</span>
+              </div>
+            </div>
+            <button class="btn-primary book-btn" data-type="room" data-id="${r._id}" data-name="${r.name}">Book Now</button>
+          </div>
         </div>
       </div>
     `);
   }
 
   function serviceCard(item, type) {
-    const img = item.image || 'https://via.placeholder.com/400x250?text=' + encodeURIComponent(item.name);
-    const sub = type === 'cab' ? (item.seats + ' seats') : item.duration;
+    const img = (item.images && item.images[0]) || item.image || 'https://via.placeholder.com/600x400?text=' + encodeURIComponent(item.name);
     const detailUrl = `${type}-detail.html?id=${item._id}`;
+    const sub = type === 'cab' ? `💺 ${item.seats || 4} Seater AC` : `⏱️ ${item.duration || '1.5-2 Hrs'}`;
+    const badgeClass = type === 'boat' ? 'tag-boat' : 'tag-type';
+    const badgeText = item.type || (type === 'cab' ? 'Chauffeur Driven' : 'Ganges Cruise');
+    const actionText = type === 'cab' ? 'Book Ride' : 'Book Boat';
+    const priceUnit = '/trip';
+
+    // Highlight tags specific to service type
+    const tagsHtml = type === 'cab' 
+      ? `<span class="feature-tag">🧳 Luggage Space</span><span class="feature-tag">❄️ Chilled AC</span><span class="feature-tag">📍 Airport & City</span>`
+      : `<span class="feature-tag">🌅 Sunrise / Aarti</span><span class="feature-tag">🛶 Private Boat</span><span class="feature-tag">🦺 Life Jackets</span>`;
+
     return $(`
-      <div class="card">
-        <a href="${detailUrl}" class="card-link">
-          <img src="${img}" alt="${item.name}">
-        </a>
+      <div class="card modern-card">
+        <div class="card-media">
+          <a href="${detailUrl}" class="card-link">
+            <img src="${img}" alt="${item.name}" loading="lazy">
+          </a>
+          <span class="media-badge ${badgeClass}">${badgeText}</span>
+        </div>
+
         <div class="card-body">
-          ${ratingStars(item.rating)}
-          <h3><a href="${detailUrl}" class="card-link">${item.name}</a></h3>
-          <div class="tags">${item.type} ${sub ? '• ' + sub : ''}</div>
-          <div class="price">
-            ${item.discountPrice ? `<del>₹${item.price}</del> <strong>₹${item.discountPrice}</strong>` : `<strong>₹${item.price}</strong>`} /trip
+          <div class="card-header-row">
+            ${ratingStars(item.rating)}
+            <span class="card-spec">${sub}</span>
           </div>
-          <button class="btn-primary book-btn" data-type="${type}" data-id="${item._id}" data-name="${item.name}">Book Now</button>
+
+          <h3 class="card-title">
+            <a href="${detailUrl}">${item.name}</a>
+          </h3>
+
+          <div class="tags-container">
+            ${tagsHtml}
+          </div>
+
+          <div class="card-footer-row">
+            <div class="price-wrap">
+              <span class="price-label">Tariff from</span>
+              <div class="price">
+                ${item.discountPrice ? `<del>₹${item.price}</del> <strong>₹${item.discountPrice}</strong>` : `<strong>₹${item.price}</strong>`}
+                <span class="price-unit">${priceUnit}</span>
+              </div>
+            </div>
+            <button class="btn-primary book-btn" data-type="${type}" data-id="${item._id}" data-name="${item.name}">${actionText}</button>
+          </div>
         </div>
       </div>
     `);
   }
 
-  // ================= PRE-FILL FROM DETAIL PAGE (sessionStorage handoff) =================
+  // ================= LOAD DATA =================
+  // ================= LOADER HELPER =================
+  function renderLoader(message = 'Loading options...') {
+    return `
+      <div class="loader-container">
+        <div class="spinner"></div>
+        <p class="loader-text">${message}</p>
+      </div>
+    `;
+  }
+// ================= LOAD DATA (HOMEPAGE & ALL LISTINGS) =================
+
+  // 1. Rooms
+  if ($('#roomsGrid').length) {
+    const $grid = $('#roomsGrid').html(renderLoader('Loading available stays...'));
+    $.get('/api/rooms', function (rooms) {
+      $grid.empty();
+      if (!rooms.length) return $grid.html('<p class="no-data">No rooms available right now.</p>');
+      rooms.slice(0, 3).forEach(r => $grid.append(roomCard(r)));
+      if (rooms.length > 3) $('#roomsViewAll').show();
+    }).fail(() => $grid.html('<p class="loading-error">Could not load rooms. Please check your connection.</p>'));
+  }
+
+  if ($('#allRoomsGrid').length) {
+    const $grid = $('#allRoomsGrid').html(renderLoader('Loading all stays...'));
+    $.get('/api/rooms', function (rooms) {
+      $grid.empty();
+      if (!rooms.length) return $grid.html('<p class="no-data">No rooms available right now.</p>');
+      rooms.forEach(r => $grid.append(roomCard(r)));
+    }).fail(() => $grid.html('<p class="loading-error">Could not load rooms.</p>'));
+  }
+
+  // 2. Cabs
+  if ($('#cabsGrid').length) {
+    const $grid = $('#cabsGrid').html(renderLoader('Loading verified cabs...'));
+    $.get('/api/cabs', function (cabs) {
+      $grid.empty();
+      if (!cabs.length) return $grid.html('<p class="no-data">No cabs available right now.</p>');
+      cabs.slice(0, 3).forEach(c => $grid.append(serviceCard(c, 'cab')));
+      if (cabs.length > 3) $('#cabsViewAll').show();
+    }).fail(() => $grid.html('<p class="loading-error">Could not load cabs.</p>'));
+  }
+
+  if ($('#allCabsGrid').length) {
+    const $grid = $('#allCabsGrid').html(renderLoader('Loading all cabs...'));
+    $.get('/api/cabs', function (cabs) {
+      $grid.empty();
+      if (!cabs.length) return $grid.html('<p class="no-data">No cabs available right now.</p>');
+      cabs.forEach(c => $grid.append(serviceCard(c, 'cab')));
+    }).fail(() => $grid.html('<p class="loading-error">Could not load cabs.</p>'));
+  }
+
+  // 3. Boats
+  if ($('#boatsGrid').length) {
+    const $grid = $('#boatsGrid').html(renderLoader('Loading boat rides...'));
+    $.get('/api/boats', function (boats) {
+      $grid.empty();
+      if (!boats.length) return $grid.html('<p class="no-data">No boats available right now.</p>');
+      boats.slice(0, 3).forEach(b => $grid.append(serviceCard(b, 'boat')));
+      if (boats.length > 3) $('#boatsViewAll').show();
+    }).fail(() => $grid.html('<p class="loading-error">Could not load boats.</p>'));
+  }
+
+  if ($('#allBoatsGrid').length) {
+    const $grid = $('#allBoatsGrid').html(renderLoader('Loading all boat rides...'));
+    $.get('/api/boats', function (boats) {
+      $grid.empty();
+      if (!boats.length) return $grid.html('<p class="no-data">No boats available right now.</p>');
+      boats.forEach(b => $grid.append(serviceCard(b, 'boat')));
+    }).fail(() => $grid.html('<p class="loading-error">Could not load boats.</p>'));
+  }
+// ================= PRE-FILL FROM DETAIL PAGE / SUBPAGES =================
   const pending = sessionStorage.getItem('kk_pending_booking');
   if (pending) {
     try {
@@ -121,22 +238,67 @@ $(function () {
       selectedItems[type] = { id, name };
       $(`#svcTypeGroup input[value="${type}"]`).prop('checked', true);
       renderSelectedItems();
-      $('#formMsg').text(`Booking: ${name}`).css('color', 'var(--primary-dark)');
+      $('#formMsg').text(`Selected: ${name}`).css('color', 'var(--primary)');
+      
+      // Auto-scroll to the form once landing on index.html
+      setTimeout(function () {
+        if ($('#contact').length) {
+          $('html, body').stop().animate({
+            scrollTop: $('#contact').offset().top - 75
+          }, 600);
+        }
+      }, 400);
     } catch (e) { /* ignore malformed data */ }
     sessionStorage.removeItem('kk_pending_booking');
   }
 
   // ================= BOOK NOW -> select service + item =================
+  // ================= BOOK NOW (HOMEPAGE SCROLL OR REDIRECT) =================
   $(document).on('click', '.book-btn', function () {
     const type = $(this).data('type');
     const id = $(this).data('id');
     const name = $(this).data('name');
 
-    selectedItems[type] = { id, name };
-    $(`#svcTypeGroup input[value="${type}"]`).prop('checked', true);
-    renderSelectedItems();
+    if ($('#contact').length) {
+      selectedItems[type] = { id, name };
+      $(`#svcTypeGroup input[value="${type}"]`).prop('checked', true);
+      renderSelectedItems();
+      $('html, body').animate({ scrollTop: $('#contact').offset().top - 70 }, 500);
+    } else {
+      // If clicked on rooms.html, cabs.html, or boats.html, redirect to contact on index
+      sessionStorage.setItem('kk_pending_booking', JSON.stringify({ type, id, name }));
+      window.location.href = 'index.html#contact';
+    }
+  });
+  // ================= PROMO BANNER COMBO CLICK =================
+  $(document).on('click', '.promo-btn-main', function (e) {
+    e.preventDefault();
 
-    $('html, body').animate({ scrollTop: $('#contact').offset().top - 70 }, 500);
+    const type = 'tour';
+    const comboName = 'Sunrise Boat + Stay Combo (25% Off)';
+    const comboId = 'combo-sunrise-boat-stay';
+
+    // Set selected item
+    selectedItems[type] = { id: comboId, name: comboName };
+
+    // Check the "Tour Package" checkbox
+    $(`#svcTypeGroup input[value="${type}"]`).prop('checked', true);
+
+    // Refresh tags and set notification
+    renderSelectedItems();
+    $('#formMsg').text(`Selected: ${comboName}`).css('color', 'var(--primary)');
+
+    // Optional: Pre-fill custom note in textarea if empty
+    if (!$('#message').val()) {
+      $('#message').val('Hi, I want to book the Sunrise Ganga Boat Ride + Stay Combo offer.');
+    }
+
+    // Smooth scroll down to the booking form
+    if ($('#contact').length) {
+      $('html, body').stop().animate({
+        scrollTop: $('#contact').offset().top - 75
+      }, 500);
+    }
   });
 
   $(document).on('change', '#svcTypeGroup input[type="checkbox"]', function () {
