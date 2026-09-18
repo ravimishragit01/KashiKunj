@@ -101,42 +101,36 @@
 <!-- ================= HERO CAROUSEL ================= -->
 <section class="carousel" id="home">
   <div class="carousel-track">
-    <div class="slide active" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi.jpg')">
-      <div class="slide-content">
-        <span class="slide-kicker">Sacred Waters</span>
-        <h1>Ganga Aarti &amp; Boat Rides</h1>
-        <p>Witness the divine evening aarti and serene morning sunrise from a private boat on the holy Ganga.</p>
-        <div class="slide-btn-group">
-          <a href="#boats" class="btn-primary">Book a Boat</a>
-          <a href="#contact" class="btn-secondary-glass">Sunrise Packages</a>
-        </div>
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <div class="slide-media">
+        <div class="slide-bg" style="background-image: url('images/banner/kashi.jpg');"></div>
+        <img class="slide-img" src="images/banner/kashi.jpg" alt="Ganga Aarti and Boat Rides in Varanasi" loading="eager">
       </div>
     </div>
-    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi2.png')">
-      <div class="slide-content">
-        <span class="slide-kicker">Welcome to Varanasi</span>
-        <h1>The Kashi Kunj</h1>
-        <p>Your peaceful haven right by the sacred Ghats of Varanasi. Serene rooms &amp; authentic hospitality.</p>
-        <div class="slide-btn-group">
-          <a href="#rooms" class="btn-primary">Explore Rooms</a>
-          <a href="#whyus" class="btn-secondary-glass">Why Stay With Us</a>
-        </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <div class="slide-media">
+        <div class="slide-bg" style="background-image: url('images/banner/kashi2.png');"></div>
+        <img class="slide-img" src="images/banner/kashi2.png" alt="The Kashi Kunj Hotel near Assi Ghat" loading="lazy">
       </div>
     </div>
-    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashic.jpg')">
-      <div class="slide-content">
-        <span class="slide-kicker">Seamless Transit</span>
-        <h1>Cabs for Every Journey</h1>
-        <p>Fixed-rate airport transfers, city temple circuits, and comfortable outstation drives.</p>
-        <div class="slide-btn-group">
-          <a href="#cabs" class="btn-primary">Book a Cab</a>
-          <a href="#things" class="btn-secondary-glass">Explore Sightseeing</a>
-        </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <div class="slide-media">
+        <div class="slide-bg" style="background-image: url('images/banner/kashic.jpg');"></div>
+        <img class="slide-img" src="images/banner/kashic.jpg" alt="Varanasi Cab Booking Services" loading="lazy">
       </div>
     </div>
   </div>
-  <button class="carousel-arrow prev" id="prevSlide" aria-label="Previous Slide">&#10094;</button>
-  <button class="carousel-arrow next" id="nextSlide" aria-label="Next Slide">&#10095;</button>
+
+  <!-- Navigation Arrows -->
+  <button class="carousel-arrow prev" id="prevSlide" aria-label="Previous Slide">‹</button>
+  <button class="carousel-arrow next" id="nextSlide" aria-label="Next Slide">›</button>
+  
+  <!-- Indicator Dots -->
   <div class="carousel-dots" id="carouselDots"></div>
 </section>
 
@@ -205,6 +199,15 @@
     <a href="place-detail.html?slug=dashashwamedh-ghat" class="chip-pill">🪔 Dashashwamedh Ghat</a>
   </div>
 </section>
+<section class="vk-promo-banner-section">
+  <div class="container">
+    <div class="vk-promo-banner-wrap">
+      <a href="#boats" class="vk-promo-banner-link" target="_self" title="Dev Diwali Boat Booking 2026">
+        <img src="images/banner/devdiwali.jpg" alt="Dev Diwali Boat Booking 2026" class="vk-promo-banner-img" loading="lazy">
+      </a>
+    </div>
+  </div>
+</section>
 <!-- ================= ADVERTISEMENTS / OFFERS ================= -->
 <section class="section alt" id="ads-section">
   <div class="section-header" style="text-align: center; margin-bottom: 24px;">
@@ -219,6 +222,7 @@
     </div>
   </div>
 </section>
+
 <!-- ================= WHY US ================= -->
 <section class="section why-us" id="whyus">
   <div class="section-header">
@@ -335,6 +339,7 @@
     </div>
   </div>
 </section>
+
 <!-- ================= BOATS ================= -->
 <section class="section" id="boats">
   <div class="section-header">
@@ -349,6 +354,7 @@
     <a href="boats.html" class="btn-primary btn-outline">Explore All Boat Rides →</a>
   </div>
 </section>
+
 <!-- ================= CABS ================= -->
 <section class="section alt" id="cabs">
   <div class="section-header">
@@ -381,8 +387,12 @@
 <section class="section" id="about">
   <div class="about-card">
     <div class="about-visual">
-      <div class="about-badge">Assi Ghat • Varanasi</div>
-      <p class="about-quote">"Atithi Devo Bhava — Serving spiritual pilgrims with pride since our inception."</p>
+      <img src="images/banner/kashi2.png" alt="The Kashi Kunj Assi Ghat" class="about-visual-img" loading="lazy">
+      <div class="about-visual-overlay"></div>
+      <div class="about-visual-content">
+        <div class="about-badge">Assi Ghat • Varanasi</div>
+        <p class="about-quote">"Atithi Devo Bhava — Serving spiritual pilgrims with pride since our inception."</p>
+      </div>
     </div>
     <div class="about-text-wrap">
       <p class="eyebrow">Our Heritage</p>
@@ -533,7 +543,8 @@
       <h3 class="footer-logo">The Kashi<span>Kunj</span></h3>
       <p class="footer-desc">Your trusted host near Assi Ghat for verified homestays, private boat rides, and hassle-free cabs in Varanasi.</p>
       <p class="footer-contact">📍 Near Assi Ghat, Main Road, Varanasi, UP</p>
-<p class="footer-contact">📞 <a href="tel:+916392658826">+91 63926 58826</a>, <a href="tel:+918299890945">+91 82998 90945</a></p>      <p class="footer-contact">✉️ <a href="mailto:thekashikunj@gmail.com">thekashikunj@gmail.com</a></p>
+      <p class="footer-contact">📞 <a href="tel:+916392658826">+91 63926 58826</a>, <a href="tel:+918299890945">+91 82998 90945</a></p>
+      <p class="footer-contact">✉️ <a href="mailto:thekashikunj@gmail.com">thekashikunj@gmail.com</a></p>
     </div>
     <div>
       <h4>Explore Services</h4>
