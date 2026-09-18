@@ -89,9 +89,9 @@ const boats = [
     highlights: ['Departs from Assi Ghat — 50 meters from our property', 'Best views of sunrise over the Ganga', 'Life jackets provided', 'Ideal before breakfast, 6:00–7:00 AM start'] },
   { name: 'Evening Ganga Aarti Boat', type: 'Maharaja Boat', price: 7000, discountPrice: 6000, rating: 4.85,
     duration: '45 min', images: [
-      '/images/boats/boat2a.jpg',
-      '/images/boats/boat2b.jpg',
-      '/images/boats/boat2c.jpg'
+      '/images/boats/mboat1.jpeg',
+      '/images/boats/mboat2.jpeg',
+      '/images/boats/mboat3.jpeg'
     ], description: 'Private boat for the evening Ganga Aarti view.',
     highlights: ['Private boat, close-up view of Ganga Aarti', 'Pickup arranged from near the property', 'Best photography spot on the river', 'Evening slot, ~6:30–7:15 PM'] },
   // { name: 'Luxury Mini Yacht', type: 'Luxury Yacht', price: 5999, discountPrice: 4999, rating: 4.7,
