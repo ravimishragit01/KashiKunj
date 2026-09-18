@@ -1,11 +1,22 @@
 const mongoose = require('mongoose');
 
+// Load .env locally if it exists (ignored on Hostinger safely)
+if (process.env.NODE_ENV !== 'Production') {
+  require('dotenv').config();
+}
+
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/kashikunj');
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err.message);
+    const uri = process.env.MONGO_URI;
+    
+    if (!uri) {
+      throw new Error('MONGO_URI is undefined. Check your Hostinger Environment Variables.');
+    }
+
+    const conn = await mongoose.connect(uri);
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`❌ MongoDB Connection Error: ${error.message}`);
     process.exit(1);
   }
 };
