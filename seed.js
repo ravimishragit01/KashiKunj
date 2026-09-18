@@ -11,7 +11,7 @@ const sampleAds = [
   {
     title: "Sunrise Ganga Aarti + Boat Combo",
     description: "Book an early morning private rowing boat from Assi Ghat with hotel stay and get flat 15% off.",
-    imageUrl: '/images/promotions/img1.jpeg',
+    imageUrl: '/images/promotions/pimg1.jpeg',
     badge: "Limited Deal",
     targetLink: "#boats",
     buttonText: "Claim Discount",
@@ -20,7 +20,7 @@ const sampleAds = [
   {
     title: "Stays at The Kashi Kunj - Special Offer",
     description: "Book your stay at The Kashi Kunj and enjoy a complimentary boat ride on the Ganga during your visit.",
-    imageUrl: '/images/promotions/img2.jpeg',
+    imageUrl: '/images/promotions/pimg2.jpeg',
     badge: "Best Value",
     targetLink: "#rooms",
     buttonText: "Book Room",
@@ -29,7 +29,7 @@ const sampleAds = [
   {
     title: "cab Transfers from Babatpur Airport (VNS) to Assi Ghat",
     description: "Book a cab transfer from Babatpur Airport (VNS) to Assi Ghat and enjoy a hassle-free ride to your hotel.",
-    imageUrl: '/images/promotions/img3.jpeg',
+    imageUrl: '/images/promotions/pimg3.jpeg',
     badge: "Best Value",
     targetLink: "#cabs",
     buttonText: "Book Cab",
