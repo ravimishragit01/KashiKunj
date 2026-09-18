@@ -101,18 +101,7 @@
 <!-- ================= HERO CAROUSEL ================= -->
 <section class="carousel" id="home">
   <div class="carousel-track">
-    <div class="slide active" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi1.png')">
-      <div class="slide-content">
-        <span class="slide-kicker">Welcome to Varanasi</span>
-        <h1>The Kashi Kunj</h1>
-        <p>Your peaceful haven right by the sacred Ghats of Varanasi. Serene rooms &amp; authentic hospitality.</p>
-        <div class="slide-btn-group">
-          <a href="#rooms" class="btn-primary">Explore Rooms</a>
-          <a href="#whyus" class="btn-secondary-glass">Why Stay With Us</a>
-        </div>
-      </div>
-    </div>
-    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi2.png')">
+    <div class="slide active" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi.jpg')">
       <div class="slide-content">
         <span class="slide-kicker">Sacred Waters</span>
         <h1>Ganga Aarti &amp; Boat Rides</h1>
@@ -123,7 +112,18 @@
         </div>
       </div>
     </div>
-    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi3.png')">
+    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashi2.png')">
+      <div class="slide-content">
+        <span class="slide-kicker">Welcome to Varanasi</span>
+        <h1>The Kashi Kunj</h1>
+        <p>Your peaceful haven right by the sacred Ghats of Varanasi. Serene rooms &amp; authentic hospitality.</p>
+        <div class="slide-btn-group">
+          <a href="#rooms" class="btn-primary">Explore Rooms</a>
+          <a href="#whyus" class="btn-secondary-glass">Why Stay With Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="slide" style="background-image:linear-gradient(180deg, rgba(14,10,7,.3) 0%, rgba(14,10,7,.75) 100%),url('images/banner/kashic.jpg')">
       <div class="slide-content">
         <span class="slide-kicker">Seamless Transit</span>
         <h1>Cabs for Every Journey</h1>
@@ -205,7 +205,20 @@
     <a href="place-detail.html?slug=dashashwamedh-ghat" class="chip-pill">🪔 Dashashwamedh Ghat</a>
   </div>
 </section>
+<!-- ================= ADVERTISEMENTS / OFFERS ================= -->
+<section class="section alt" id="ads-section">
+  <div class="section-header" style="text-align: center; margin-bottom: 24px;">
+    <p class="eyebrow" style="color: #e8900a; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">Special Offers</p>
+    <h2 style="font-size: 28px; margin-top: 4px;">Featured Promotions</h2>
+  </div>
 
+  <div class="ad-grid" id="adContainer">
+    <!-- Skeleton loader while fetching from DB -->
+    <div class="ad-card loading-card">
+      <p style="text-align: center; padding: 40px; color: #888;">Loading special offers...</p>
+    </div>
+  </div>
+</section>
 <!-- ================= WHY US ================= -->
 <section class="section why-us" id="whyus">
   <div class="section-header">
@@ -322,7 +335,20 @@
     </div>
   </div>
 </section>
-
+<!-- ================= BOATS ================= -->
+<section class="section" id="boats">
+  <div class="section-header">
+    <p class="eyebrow">On the Ganga</p>
+    <h2>Boat Booking in Varanasi</h2>
+    <p class="section-sub">Experience the timeless spiritual heritage of the 84 Ghats from the sacred river</p>
+  </div>
+  <div class="card-grid" id="boatsGrid">
+    <p class="loading">Loading boats...</p>
+  </div>
+  <div class="view-all-wrap" id="boatsViewAll" style="display:none;">
+    <a href="boats.html" class="btn-primary btn-outline">Explore All Boat Rides →</a>
+  </div>
+</section>
 <!-- ================= CABS ================= -->
 <section class="section alt" id="cabs">
   <div class="section-header">
@@ -338,20 +364,6 @@
   </div>
 </section>
 
-<!-- ================= BOATS ================= -->
-<section class="section" id="boats">
-  <div class="section-header">
-    <p class="eyebrow">On the Ganga</p>
-    <h2>Boat Booking in Varanasi</h2>
-    <p class="section-sub">Experience the timeless spiritual heritage of the 84 Ghats from the sacred river</p>
-  </div>
-  <div class="card-grid" id="boatsGrid">
-    <p class="loading">Loading boats...</p>
-  </div>
-  <div class="view-all-wrap" id="boatsViewAll" style="display:none;">
-    <a href="boats.html" class="btn-primary btn-outline">Explore All Boat Rides →</a>
-  </div>
-</section>
 <!-- ================= THINGS TO DO / PLACES TO VISIT ================= -->
 <section class="section alt" id="things">
   <div class="section-header">

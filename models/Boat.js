@@ -7,6 +7,7 @@ const boatSchema = new mongoose.Schema({
   discountPrice: { type: Number },
   duration: String, // 1 hr, 45 min
   image: String,
+  images: [{ type: String }], // Array of gallery photos
   description: String,
   rating: { type: Number, default: 4.8 },
   highlights: [String], // bullet points shown on the detail page

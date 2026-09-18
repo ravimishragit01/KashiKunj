@@ -169,6 +169,47 @@ $(function () {
       </div>
     `;
   }
+  $(document).ready(function () {
+  loadAdvertisements();
+});
+
+function loadAdvertisements() {
+  $.ajax({
+    url: "/api/ads", // Your backend route returning DB records
+    method: "GET",
+    dataType: "json",
+    success: function (response) {
+      const container = $("#adContainer");
+      container.empty();
+
+      if (!response || response.length === 0) {
+        $("#ads-section").hide(); // Hide section if no active ads
+        return;
+      }
+
+      response.forEach(function (ad) {
+        const adHtml = `
+          <div class="ad-card">
+            <div class="ad-img-wrapper">
+              <span class="ad-badge">${ad.badge || "Special"}</span>
+              <img src="${ad.imageUrl}" alt="${ad.title || "Special Offer"}" loading="lazy">
+            </div>
+            <div class="ad-content">
+              <h3>${ad.title}</h3>
+              <p>${ad.description}</p>
+              <a href="${ad.targetLink || "#contact"}" class="btn-primary book-btn">${ad.buttonText || "Claim Offer"}</a>
+            </div>
+          </div>
+        `;
+        container.append(adHtml);
+      });
+    },
+    error: function (err) {
+      console.error("Failed to load advertisements:", err);
+      $("#adContainer").html('<p style="text-align:center; color:#999;">Offers temporarily unavailable.</p>');
+    }
+  });
+}
 // ================= LOAD DATA (HOMEPAGE & ALL LISTINGS) =================
 
   // 1. Rooms
@@ -305,7 +346,8 @@ $(function () {
     const type = $(this).val();
     if (!$(this).is(':checked')) delete selectedItems[type];
     renderSelectedItems();
-  });
+    
+  })
 
   function renderSelectedItems() {
     const $box = $('#selectedItemsBox').empty();
@@ -324,6 +366,7 @@ $(function () {
     delete selectedItems[type];
     $(`#svcTypeGroup input[value="${type}"]`).prop('checked', false);
     renderSelectedItems();
+    $('#formMsg').text('');
   });
 
   // ================= SUBMIT: WhatsApp instantly, save in background =================
@@ -419,3 +462,5 @@ $(function () {
   });
 
 });
+
+
