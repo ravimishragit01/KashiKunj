@@ -9,15 +9,15 @@ const Place = require('./models/Place');
 
 // 2. Add sample ad data:
 const sampleAds = [
-  {
-    name: "Sunrise Ganga Aarti + Boat Combo",
-    description: "Book an early morning private rowing boat from Assi Ghat with hotel stay and get flat 15% off.",
-    imageUrl: '/images/promotions/pimg1.jpeg',
-    badge: "Limited Deal",
-    targetLink: "#boats",
-    buttonText: "Claim Discount",
-    isActive: true
-  },
+  // {
+  //   name: "Sunrise Ganga Aarti + Boat Combo",
+  //   description: "Book an early morning private rowing boat from Assi Ghat with hotel stay and get flat 15% off.",
+  //   imageUrl: '/images/promotions/pimg1.jpeg',
+  //   badge: "Limited Deal",
+  //   targetLink: "#boats",
+  //   buttonText: "Claim Discount",
+  //   isActive: true
+  // },
   {
     name: "Stays at The Kashi Kunj - Special Offer",
     description: "Book your stay at The Kashi Kunj and enjoy a complimentary boat ride on the Ganga during your visit.",
@@ -39,7 +39,7 @@ const sampleAds = [
 ];
 
 const rooms = [
-  { name: 'The Kashi Kunj', type: 'King Size Bed', price: 3499, discountPrice: 1899, capacity: 2, rating: 4.6,
+  { name: 'The Kashi Kunj - #Property1', type: 'King Size Bed', price: 3499, discountPrice: 1899, capacity: 2, rating: 4.6,
     amenities: ['WiFi','AC','Parking','TV','Geyser'], images: [
       '/images/rooms/room1.jpg',
       '/images/rooms/room2.jpg',
@@ -50,18 +50,24 @@ const rooms = [
     ],
     description: 'Comfortable deluxe room near Ganga Ghats with modern amenities.',
     highlights: ['Just 50 meters from Assi Ghat', 'Property located directly on the main road — easy access', 'Free WiFi & daily housekeeping', 'Walking distance to cafes and ghats'] },
-  { name: 'Hotel Banaras Haveli', type: 'Super Deluxe', price: 2999, discountPrice: 2499, capacity: 3, rating: 4.7,
-    amenities: ['WiFi','AC','Parking','TV','Geyser','Balcony'], images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700'],
+  { name: '#Property2', type: 'Super Deluxe', price: 2999, discountPrice: 2499, capacity: 3, rating: 4.7,
+    amenities: ['WiFi','AC','Parking','TV','Geyser','Balcony'], images: [
+      '/images/rooms/Property2-1.jpeg',
+      '/images/rooms/Property2-2.jpeg',
+      '/images/rooms/Property2-3.jpeg',
+      '/images/rooms/Property2-4.jpeg',
+      '/images/rooms/Property2-5.jpeg'
+    ],
     description: 'Spacious room with balcony view, ideal for families.',
     highlights: ['Balcony seating, quiet street-facing view', 'Just 50 meters from Assi Ghat', 'On the main road — no narrow lanes with luggage', 'Ideal for families & small groups'] },
-  { name: 'Hotel Kailash Palace', type: 'Suite', price: 4499, discountPrice: 3999, capacity: 4, rating: 4.9,
-    amenities: ['WiFi','AC','Parking','TV','Geyser','Mini Fridge','Room Service'], images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?w=700'],
-    description: 'Premium suite with river-facing view and extra living space.',
-    highlights: ['Largest room category with living space', 'Just 50 meters from Assi Ghat', 'In-house room service', 'Free parking on the main road'] },
-    { name: 'Narayana Homestay', type: 'Deluxe', price: 2199, discountPrice: 1799, capacity: 2, rating: 4.6,
-    amenities: ['WiFi','AC','Parking','TV','Geyser'], images: ['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700', 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700'],
-    description: 'Comfortable deluxe room near Ganga Ghats with modern amenities.',
-    highlights: ['Just 50 meters from Assi Ghat', 'Property located directly on the main road — easy access', 'Free WiFi & daily housekeeping', 'Walking distance to cafes and ghats'] },
+  // { name: '#Property3', type: 'Suite', price: 4499, discountPrice: 3999, capacity: 4, rating: 4.9,
+  //   amenities: ['WiFi','AC','Parking','TV','Geyser','Mini Fridge','Room Service'], images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?w=700'],
+  //   description: 'Premium suite with river-facing view and extra living space.',
+  //   highlights: ['Largest room category with living space', 'Just 50 meters from Assi Ghat', 'In-house room service', 'Free parking on the main road'] },
+  //   { name: '#Property4', type: 'Deluxe', price: 2199, discountPrice: 1799, capacity: 2, rating: 4.6,
+  //   amenities: ['WiFi','AC','Parking','TV','Geyser'], images: ['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700', 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700'],
+  //   description: 'Comfortable deluxe room near Ganga Ghats with modern amenities.',
+  //   highlights: ['Just 50 meters from Assi Ghat', 'Property located directly on the main road — easy access', 'Free WiFi & daily housekeeping', 'Walking distance to cafes and ghats'] },
   // { name: 'Hotel Banaras Haveli', type: 'Super Deluxe', price: 2999, discountPrice: 2499, capacity: 3, rating: 4.7,
   //   amenities: ['WiFi','AC','Parking','TV','Geyser','Balcony'], images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700'],
   //   description: 'Spacious room with balcony view, ideal for families.',
@@ -79,16 +85,16 @@ const cabs = [
   { name: 'Ertiga', type: 'Full Day Local Sightseeing', price: 3500, discountPrice: 3000, seats: 6, rating: 4.8,
     image: '/images/cabs/car2.jpeg', description: 'Spacious MUV for small families/groups.',
     highlights: ['6-seater, ideal for families/small groups', 'Covers Sarnath, Kaal Bhairav, Assi & Dashashwamedh Ghat', 'Airport pickup/drop available', 'AC + extra luggage space'] },
-  { name: 'Innova Crysta', type: 'Airport Pickup/Drop', price: 2500, discountPrice: 2000, seats: 7, rating: 4.9,
+  { name: 'Innova Crysta', type: 'Airport Pickup/Drop', price: 5000, discountPrice: 4000, seats: 7, rating: 4.9,
     image: '/images/cabs/car3.jpeg', description: 'Premium comfortable ride for airport transfer.',
     highlights: ['Premium 7-seater, most comfortable option', 'Dedicated airport pickup & drop service', 'Also available for Prayagraj / Ayodhya outstation trips', 'Professional, verified drivers'] }
 ];
 
 const boats = [
-  { name: 'Sunrise Boat Ride - Assi Ghat', type: 'Motor Boat', price: 2999, discountPrice: 2499, rating: 4.9,
+  { name: 'Dev Diwali(Motor Boat) - Assi Ghat', type: 'Motor Boat', price: 2999, discountPrice: 2499, rating: 4.9,
     duration: '3 hr', images: '/images/boats/boat1.jpeg', description: 'Morning boat ride to witness sunrise over Ganga.',
     highlights: ['Departs from Assi Ghat — 50 meters from our property', 'Best views of sunrise over the Ganga', 'Life jackets provided', 'Ideal before breakfast, 6:00–7:00 AM start'] },
-  { name: 'Evening Ganga Aarti Boat', type: 'Maharaja Boat', price: 6999, discountPrice: 6499, rating: 4.85,
+  { name: 'Dev Diwali(Maharaja Boat)', type: 'Maharaja Boat', price: 6999, discountPrice: 6499, rating: 4.85,
     duration: '3hr 30min', images: [
       '/images/boats/mboat1.jpeg',
       '/images/boats/mboat2.jpeg',
