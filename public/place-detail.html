@@ -8,7 +8,16 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+    <!-- ================= DIWALI GLOBAL OVERLAY ================= -->
+<div id="diwali-overlay">
+  <div class="lights-container">
+    <div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div>
+  </div>
+  <canvas id="fireworksCanvas"></canvas>
+</div>
 <header class="topbar">
   <p>Most Trusted Stay, Cab &amp; Boat Booking Partner in Varanasi &nbsp;|&nbsp; <a href="mailto:thekashikunj@gmail.com">thekashikunj@gmail.com</a></p>
 </header>
@@ -58,7 +67,7 @@
 </footer>
 
 <a href="https://wa.me/916392658826" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
-
+<script src="js/diwali.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 $(function () {
@@ -115,6 +124,7 @@ $(function () {
     $('.nav-links').toggleClass('open');
   });
 });
+
 </script>
 </body>
 </html>
