@@ -16,6 +16,7 @@ app.use('/api/cabs', require('./routes/cabs'));
 app.use('/api/boats', require('./routes/boats'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/ads', require('./routes/ads'));
+app.use('/api/places', require('./routes/places'));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

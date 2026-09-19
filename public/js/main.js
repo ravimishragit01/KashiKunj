@@ -54,18 +54,31 @@ $(function () {
   });
   startAutoplay();
 
-  // ================= PLACES TO VISIT (homepage grid) =================
-  if (typeof PLACES !== "undefined") {
-    const $pg = $("#placesGrid");
-    PLACES.slice(0, 6).forEach((p) => {
+// ================= PLACES TO VISIT (HOMEPAGE DYNAMIC LOAD) =================
+if ($('#placesGrid').length) {
+  const $pg =$('#placesGrid');
+  $pg.html(renderLoader('Loading top attractions...'));
+
+  $.get('/api/places', function (places) {
+    $pg.empty();
+    if (!places || !places.length) {
+      $pg.html('<p class="no-data">No attractions listed currently.</p>');
+      return;
+    }
+
+    // Display first 6 attractions on the homepage
+    places.slice(0, 6).forEach(function (p) {
       $pg.append(`
         <a class="attraction-card" href="place-detail.html?slug=${p.slug}">
-          <img src="${p.image}" alt="${p.name}">
+          <img src="${p.image}" alt="${p.name}" loading="lazy">
           <p>${p.name}</p>
         </a>
       `);
     });
-  }
+  }).fail(function () {
+    $pg.html('<p class="loading-error">Could not load attractions. Please check your connection.</p>');
+  });
+}
 
   // ================= ENRICHED RATINGS & CARDS =================
   function ratingStars(r) {
@@ -209,12 +222,12 @@ $(function () {
     <div class="ad-card">
       <div class="ad-img-wrapper">
         <span class="ad-badge">${ad.badge || "Special"}</span>
-        <img src="${imgSrc}" alt="${ad.title || "Special Offer"}" onerror="this.src='/images/banner/kashi2.png';">
+        <img src="${imgSrc}" alt="${ad.name || "Special Offer"}" onerror="this.src='/images/banner/kashi2.png';">
       </div>
       <div class="ad-content">
-        <h3>${ad.title}</h3>
+        <h3>${ad.name}</h3>
         <p>${ad.description}</p>
-        <a href="${ad.targetLink || "#contact"}" class="btn-primary book-btn">${ad.buttonText || "Claim Offer"}</a>
+        <a href="${ad.targetLink || "#contact"}" data-id="${ad._id}" data-name="${ad.name}" class="btn-primary book-btn">${ad.buttonText || "Claim Offer"}</a>
       </div>
     </div>
   `);

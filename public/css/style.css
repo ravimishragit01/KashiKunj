@@ -1776,6 +1776,7 @@ h2 {
   position: absolute;
   top: 12px;
   left: 12px;
+  z-index: 5; /* Keeps the badge above the scaled image */
   background: #e8900a;
   color: #fff;
   font-size: 11px;
@@ -1783,6 +1784,7 @@ h2 {
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 20px;
+  pointer-events: none; /* Prevents badge hover from interfering with image zoom */
 }
 
 .ad-content {

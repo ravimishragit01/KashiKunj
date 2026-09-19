@@ -10,7 +10,7 @@
 <body>
 
 <header class="topbar">
-  <p>Most Trusted Stay, Cab & Boat Booking Partner in Varanasi &nbsp;|&nbsp; <a href="mailto:thekashikunj@gmail.com">thekashikunj@gmail.com</a></p>
+  <p>Most Trusted Stay, Cab &amp; Boat Booking Partner in Varanasi &nbsp;|&nbsp; <a href="mailto:thekashikunj@gmail.com">thekashikunj@gmail.com</a></p>
 </header>
 
 <nav class="navbar">
@@ -27,10 +27,15 @@
   </div>
 </nav>
 
-<div class="breadcrumb"><a href="index.html">Home</a> / <a href="places.html">Places to Visit</a> / <span id="crumbName">Details</span></div>
+<div class="breadcrumb">
+  <a href="index.html">Home</a> / <a href="places.html">Places to Visit</a> / <span id="crumbName">Details</span>
+</div>
 
 <section class="section detail-section" id="placeContent">
-  <p class="loading">Loading...</p>
+  <div class="loader-container">
+    <div class="spinner"></div>
+    <p class="loader-text">Loading destination details...</p>
+  </div>
 </section>
 
 <footer class="footer">
@@ -38,7 +43,7 @@
     <div>
       <h3>The Kashi Kunj</h3>
       <p>Near Assi Ghat, Varanasi, Uttar Pradesh</p>
-      <p>+91 90000 00000</p>
+      <p>+916392658826</p>
       <p>thekashikunj@gmail.com</p>
     </div>
     <div>
@@ -55,40 +60,60 @@
 <a href="https://wa.me/916392658826" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">💬</a>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="js/places-data.js"></script>
 <script>
 $(function () {
   const slug = new URLSearchParams(window.location.search).get('slug');
-  const place = PLACES.find(p => p.slug === slug);
-  const $c = $('#placeContent');
+  const $c =$('#placeContent');
 
-  if (!place) {
-    $c.html('<p class="loading">Place not found. <a href="places.html">View all places</a></p>');
-  } else {
+  if (!slug) {
+    $c.html('<p class="no-data">No place selected. <a href="places.html">View all places</a></p>');
+    return;
+  }
+
+  // Fetch place record dynamically from MongoDB API
+  $.get('/api/places/' + encodeURIComponent(slug), function (place) {
+    if (!place) {
+      $c.html('<p class="no-data">Place not found. <a href="places.html">View all places</a></p>');
+      return;
+    }
+
     document.title = place.name + ' | The Kashi Kunj';
     $('#crumbName').text(place.name);
+
+    const highlightsHtml = (place.highlights && place.highlights.length)
+      ? place.highlights.map(h => `<li>${h}</li>`).join('')
+      : '<li>Verified tourist landmark near Varanasi Ghats</li>';
+
+    const waText = encodeURIComponent('Hi, I want to visit ' + place.name + '. Please share cab options.');
+
     $c.html(`
-      <div class="detail-hero"><img src="${place.image}" alt="${place.name}"></div>
+      <div class="detail-hero">
+        <img src="${place.image}" alt="${place.name}" loading="eager">
+      </div>
       <div class="detail-body">
         <div class="detail-main">
           <h1>${place.name}</h1>
-          <p class="detail-tags">📍 ${place.distance}</p>
-          <p class="detail-desc">${place.short}</p>
+          <p class="detail-tags">📍 ${place.distance || 'Varanasi, UP'}</p>
+          <p class="detail-desc">${place.short || ''}</p>
           <h3>Highlights</h3>
           <ul class="highlight-list">
-            ${place.highlights.map(h => `<li>${h}</li>`).join('')}
+            ${highlightsHtml}
           </ul>
         </div>
         <div class="detail-sidebar">
           <p class="sidebar-note">Want to visit ${place.name}? Book a cab with us or ask about combined sightseeing packages.</p>
           <a href="index.html#cabs" class="btn-primary btn-full">Book a Cab</a>
-          <a href="https://wa.me/916392658826?text=${encodeURIComponent('Hi, I want to visit ' + place.name + '. Please share cab options.')}" target="_blank" class="btn-whatsapp-outline">Ask on WhatsApp</a>
+          <a href="https://wa.me/916392658826?text=${waText}" target="_blank" class="btn-whatsapp-outline">Ask on WhatsApp</a>
         </div>
       </div>
     `);
-  }
+  }).fail(function () {
+    $c.html('<p class="loading-error">Place details could not be loaded. <a href="places.html">Back to all places</a></p>');
+  });
 
-  $('#hamburger').on('click', function () { $('.nav-links').toggleClass('open'); });
+  $('#hamburger').on('click', function () {
+    $('.nav-links').toggleClass('open');
+  });
 });
 </script>
 </body>

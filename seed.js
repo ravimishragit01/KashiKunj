@@ -5,11 +5,12 @@ const Room = require('./models/Room');
 const Cab = require('./models/Cab');
 const Boat = require('./models/Boat');
 const Ad = require('./models/Ad');
+const Place = require('./models/Place');
 
 // 2. Add sample ad data:
 const sampleAds = [
   {
-    title: "Sunrise Ganga Aarti + Boat Combo",
+    name: "Sunrise Ganga Aarti + Boat Combo",
     description: "Book an early morning private rowing boat from Assi Ghat with hotel stay and get flat 15% off.",
     imageUrl: '/images/promotions/pimg1.jpeg',
     badge: "Limited Deal",
@@ -18,7 +19,7 @@ const sampleAds = [
     isActive: true
   },
   {
-    title: "Stays at The Kashi Kunj - Special Offer",
+    name: "Stays at The Kashi Kunj - Special Offer",
     description: "Book your stay at The Kashi Kunj and enjoy a complimentary boat ride on the Ganga during your visit.",
     imageUrl: '/images/promotions/pimg2.jpeg',
     badge: "Best Value",
@@ -27,7 +28,7 @@ const sampleAds = [
     isActive: true
   },
   {
-    title: "cab Transfers from Babatpur Airport (VNS) to Assi Ghat",
+    name: "cab Transfers from Babatpur Airport (VNS) to Assi Ghat",
     description: "Book a cab transfer from Babatpur Airport (VNS) to Assi Ghat and enjoy a hassle-free ride to your hotel.",
     imageUrl: '/images/promotions/pimg3.jpeg',
     badge: "Best Value",
@@ -38,7 +39,7 @@ const sampleAds = [
 ];
 
 const rooms = [
-  { name: 'The Kashi Kunj', type: 'Deluxe', price: 3500, discountPrice: 3000, capacity: 2, rating: 4.6,
+  { name: 'The Kashi Kunj', type: 'King Size Bed', price: 3499, discountPrice: 2499, capacity: 2, rating: 4.6,
     amenities: ['WiFi','AC','Parking','TV','Geyser'], images: [
       '/images/rooms/room1.jpg',
       '/images/rooms/room2.jpg',
@@ -84,11 +85,11 @@ const cabs = [
 ];
 
 const boats = [
-  { name: 'Sunrise Boat Ride - Assi Ghat', type: 'Motor Boat', price: 3000, discountPrice: 2000, rating: 4.9,
-    duration: '1 hr', images: '/images/boats/boat1.jpeg', description: 'Morning boat ride to witness sunrise over Ganga.',
+  { name: 'Sunrise Boat Ride - Assi Ghat', type: 'Motor Boat', price: 2999, discountPrice: 2499, rating: 4.9,
+    duration: '3 hr', images: '/images/boats/boat1.jpeg', description: 'Morning boat ride to witness sunrise over Ganga.',
     highlights: ['Departs from Assi Ghat — 50 meters from our property', 'Best views of sunrise over the Ganga', 'Life jackets provided', 'Ideal before breakfast, 6:00–7:00 AM start'] },
-  { name: 'Evening Ganga Aarti Boat', type: 'Maharaja Boat', price: 7000, discountPrice: 6000, rating: 4.85,
-    duration: '45 min', images: [
+  { name: 'Evening Ganga Aarti Boat', type: 'Maharaja Boat', price: 6999, discountPrice: 6499, rating: 4.85,
+    duration: '3hr 30min', images: [
       '/images/boats/mboat1.jpeg',
       '/images/boats/mboat2.jpeg',
       '/images/boats/mboat3.jpeg'
@@ -99,16 +100,119 @@ const boats = [
   //   highlights: ['Premium yacht for anniversaries & celebrations', 'Seating & refreshments on board', 'Can be combined with Ganga Aarti timing', 'Advance booking recommended'] }
 ];
 
+const initialPlaces = [
+  {
+    slug: 'ganga-aarti',
+    name: 'Ganga Aarti at Dashashwamedh Ghat',
+    image: '/images/places/gangaaartiD.jpg',
+    short: 'The evening ritual of fire, chanting and music on the banks of the Ganga.',
+    distance: '2.5 km from The Kashi Kunj',
+    highlights: [
+      'Held every evening at Dashashwamedh Ghat, just after sunset',
+      'Best experienced from a private boat on the river',
+      'Arrive 30–45 minutes early for a good viewing spot',
+      'We arrange a private boat pickup for Aarti viewing — ask our team'
+    ],
+    order: 1
+  },
+  {
+    slug: 'kaal-bhairav',
+    name: 'Kaal Bhairav Temple',
+    image: '/images/places/kaalbhairav.jpg',
+    short: 'One of the most powerful temples in Varanasi, dedicated to Kaal Bhairav — the guardian deity of Kashi.',
+    distance: '4 km from The Kashi Kunj',
+    highlights: [
+      'Considered the protector deity of Varanasi',
+      'Popular for seeking protection & removing obstacles',
+      'Best visited early morning to avoid crowds',
+      'Easily combined with a Kashi Vishwanath temple visit'
+    ],
+    order: 2
+  },
+  {
+    slug: 'sarnath',
+    name: 'Sarnath',
+    image: '/images/places/sarnath.jpg',
+    short: 'The place where Buddha gave his first sermon after attaining enlightenment.',
+    distance: '13 km from The Kashi Kunj',
+    highlights: [
+      'Home to the Dhamek Stupa and ancient Buddhist ruins',
+      'Sarnath Museum houses the original Ashoka Lion Capital',
+      'Peaceful gardens, ideal for a half-day trip',
+      'Best combined with a full-day cab booking'
+    ],
+    order: 3
+  },
+  {
+    slug: 'bhu-campus',
+    name: 'BHU Campus',
+    image: '/images/places/bhu.jpg',
+    short: 'Banaras Hindu University — one of India\'s largest residential universities, with the iconic New Vishwanath Temple.',
+    distance: '6 km from The Kashi Kunj',
+    highlights: [
+      'Beautiful green campus, popular for a relaxed walk',
+      'New Vishwanath Temple built inside the campus',
+      'Bharat Kala Bhavan museum for art & history lovers',
+      'Great stop between city sightseeing points'
+    ],
+    order: 4
+  },
+  {
+    slug: 'ramnagar-fort',
+    name: 'Ramnagar Fort',
+    image: '/images/places/ramnagar.jpg',
+    short: 'A centuries-old fort on the eastern bank of the Ganga, home to the Kashi Naresh (King of Varanasi).',
+    distance: '9 km from The Kashi Kunj',
+    highlights: [
+      'Museum with vintage cars, weapons & royal palanquins',
+      'Best views from across the river at sunset',
+      'Still the residence of the Kashi Naresh royal family',
+      'Combine with a boat ride for the best experience'
+    ],
+    order: 5
+  },
+  {
+    slug: 'assi-ghat',
+    name: 'Assi Ghat',
+    image: '/images/places/assi.jpg',
+    short: 'The southernmost of Varanasi\'s ghats, and the one right next to The Kashi Kunj.',
+    distance: 'Just 50 meters from The Kashi Kunj',
+    highlights: [
+      'Right at our doorstep — a 1-minute walk from the property',
+      'Popular for morning yoga & sunrise boat rides',
+      'Lively evening Subah-e-Banaras cultural program',
+      'Great base for exploring the ghats on foot'
+    ],
+    order: 6
+  },
+  {
+    slug: 'dashashwamedh-ghat',
+    name: 'Dashashwamedh Ghat',
+    image: '/images/places/gangaaartiD.jpg',
+    short: 'The main ghat of Varanasi and the venue for the famous evening Ganga Aarti.',
+    distance: '2.5 km from The Kashi Kunj',
+    highlights: [
+      'Most iconic and busiest ghat in Varanasi',
+      'Site of the nightly Ganga Aarti ceremony',
+      'Best reached by boat directly from Assi Ghat',
+      'Surrounded by markets, food stalls & boat operators'
+    ],
+    order: 7
+  }
+];
+
 (async () => {
   await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/kashikunj');
   await Room.deleteMany({});
   await Cab.deleteMany({});
+  await Place.deleteMany({});
   await Ad.deleteMany({});
   await Boat.deleteMany({});
   await Room.insertMany(rooms);
   await Cab.insertMany(cabs);
   await Ad.insertMany(sampleAds);
   await Boat.insertMany(boats);
+  await Place.insertMany(initialPlaces);
   console.log('Seed data inserted successfully');
   process.exit();
 })();
