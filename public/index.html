@@ -723,89 +723,57 @@
         </div>
 
         <form id="bookingForm" class="booking-form">
-          <div class="form-row full">
-            <label>Select Services Required</label>
-            <div class="checkbox-group" id="svcTypeGroup">
-              <label class="chip"
-                ><input type="checkbox" name="svcType" value="room" /> 🏨 Room
-                Stay</label
-              >
-              <label class="chip"
-                ><input type="checkbox" name="svcType" value="cab" /> 🚗 Private
-                Cab</label
-              >
-              <label class="chip"
-                ><input type="checkbox" name="svcType" value="boat" /> 🚤 Ganga
-                Boat</label
-              >
-              <label class="chip"
-                ><input type="checkbox" name="svcType" value="tour" /> 🌍 Tour
-                Package</label
-              >
-            </div>
-            <div id="selectedItemsBox" class="selected-items"></div>
-          </div>
+  <div class="form-row full">
+    <label>Select Services Required</label>
+    <div class="checkbox-group" id="svcTypeGroup">
+      <label class="chip"><input type="checkbox" name="svcType" value="room"> 🏨 Room Stay</label>
+      <label class="chip"><input type="checkbox" name="svcType" value="cab"> 🚗 Private Cab</label>
+      <label class="chip"><input type="checkbox" name="svcType" value="boat"> 🚤 Ganga Boat</label>
+      <label class="chip"><input type="checkbox" name="svcType" value="tour"> 🌍 Tour Package</label>
+    </div>
+    <div id="selectedItemsBox" class="selected-items"></div>
+  </div>
 
-          <div class="form-row">
-            <label for="name">Full Name *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="e.g. Aditi Roy"
-              required
-            />
-          </div>
-          <div class="form-row">
-            <label for="phone">WhatsApp Phone Number *</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="+91 98765 43210"
-              required
-            />
-          </div>
-          <div class="form-row">
-            <label for="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="name@example.com"
-            />
-          </div>
-          <div class="form-row">
-            <label for="checkIn">Check-in / Travel Date</label>
-            <input type="date" id="checkIn" name="checkIn" />
-          </div>
-          <div class="form-row">
-            <label for="checkOut">Check-out Date</label>
-            <input type="date" id="checkOut" name="checkOut" />
-          </div>
-          <div class="form-row">
-            <label for="guests">Number of Guests</label>
-            <input type="number" id="guests" name="guests" min="1" value="2" />
-          </div>
-          <div class="form-row full">
-            <label for="message">Special Requests or Travel Details</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="3"
-              placeholder="Tell us if you need early check-in, pickup timing, or morning boat slot..."
-            ></textarea>
-          </div>
+  <div class="form-row">
+    <label for="name">Full Name *</label>
+    <input type="text" id="name" name="name" placeholder="e.g. Aditi Roy" required>
+  </div>
+  <div class="form-row">
+    <label for="phone">WhatsApp Phone Number *</label>
+    <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+  </div>
+  <div class="form-row">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="name@example.com">
+  </div>
 
-          <button type="submit" class="btn-primary btn-submit-glow">
-            Submit &amp; Connect via WhatsApp →
-          </button>
-          <p class="form-note">
-            🔒 Your details are kept private and sent immediately to our front
-            desk manager.
-          </p>
-          <p id="formMsg"></p>
-        </form>
+  <!-- Wrap date rows with IDs and add labels with asterisk hooks -->
+  <div class="form-row" id="checkInRow">
+    <label for="checkIn" id="checkInLabel">Check-in / Travel Date *</label>
+    <input type="date" id="checkIn" name="checkIn" required>
+  </div>
+  <div class="form-row" id="checkOutRow">
+    <label for="checkOut" id="checkOutLabel">Check-out Date *</label>
+    <input type="date" id="checkOut" name="checkOut" required>
+  </div>
+
+  <div class="form-row">
+    <label for="guests">Number of Guests</label>
+    <input type="number" id="guests" name="guests" min="1" value="2">
+  </div>
+  <div class="form-row full">
+    <label for="message">Special Requests or Travel Details</label>
+    <textarea id="message" name="message" rows="3" placeholder="Tell us if you need early check-in, pickup timing, or morning boat slot..."></textarea>
+  </div>
+
+  <button type="submit" class="btn-primary btn-submit-glow">
+    Submit &amp; Connect via WhatsApp →
+  </button>
+  <p class="form-note">
+    🔒 Your details are kept private and sent immediately to our front desk manager.
+  </p>
+  <p id="formMsg"></p>
+</form>
       </div>
     </section>
 

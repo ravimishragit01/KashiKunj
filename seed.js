@@ -39,7 +39,7 @@ const sampleAds = [
 ];
 
 const rooms = [
-  { name: 'The Kashi Kunj - #Property1', type: 'King Size Bed', price: 3499, discountPrice: 1899, capacity: 2, rating: 4.6,
+  { name: 'The Kashi Kunj - #Property1', type: 'King Size Bed', price: 2599, discountPrice: 1899, capacity: 2, rating: 4.6,
     amenities: ['WiFi','AC','Parking','TV','Geyser'], images: [
       '/images/rooms/room1.jpg',
       '/images/rooms/room2.jpg',
