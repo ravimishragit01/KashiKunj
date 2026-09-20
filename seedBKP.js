@@ -92,17 +92,15 @@ const cabs = [
 
 const boats = [
   { name: 'Dev Diwali(Motor Boat) - Assi Ghat', type: 'Motor Boat', price: 2999, discountPrice: 2499, rating: 4.9,
-    duration: '3 hr', images: '/images/boats/boat1.jpeg', description: 'Evening boat ride to witness Full Dev Diwali Event over Ganga.',
-        tagsHtml: '<span class="feature-tag">🌅 Full Dev Diwali Events</span><span class="feature-tag">🛶 Sharing Boat</span><span class="feature-tag">🦺 Life Jackets</span>',
-    highlights: ['Departs from Assi Ghat — 50 meters from our property', 'Best views of Fire Shows, Leser Shows, Evening Ganga Aarti, Drone Show etc. over the Ganga', 'Life jackets provided', 'Ideal before breakfast, 5:00–6:00 PM start'] },
-  { name: 'Dev Diwali(Maharaja Boat)', type: 'Maharaja Boat - Best View', price: 6999, discountPrice: 6499, rating: 4.85,
+    duration: '3 hr', images: '/images/boats/boat1.jpeg', description: 'Morning boat ride to witness sunrise over Ganga.',
+    highlights: ['Departs from Assi Ghat — 50 meters from our property', 'Best views of sunrise over the Ganga', 'Life jackets provided', 'Ideal before breakfast, 6:00–7:00 AM start'] },
+  { name: 'Dev Diwali(Maharaja Boat)', type: 'Maharaja Boat', price: 6999, discountPrice: 6499, rating: 4.85,
     duration: '3hr 30min', images: [
       '/images/boats/mboat1.jpeg',
       '/images/boats/mboat2.jpeg',
       '/images/boats/mboat3.jpeg'
     ], description: 'Private boat for the evening Ganga Aarti view.',
-    tagsHtml: '<span class="feature-tag">🌅 Full Dev Diwali Events</span><span class="feature-tag">🛶 Sharing Boat</span><span class="feature-tag">🦺 Life Jackets</span><span class="feature-tag"> Best View</span>',
-    highlights: ['Evening boat ride with best View to witness Full Dev Diwali Event over Ganga.', 'Pickup arranged from near the property', 'Best photography spot on the river', 'Evening slot, ~6:30–7:15 PM'] },
+    highlights: ['Private boat, close-up view of Ganga Aarti', 'Pickup arranged from near the property', 'Best photography spot on the river', 'Evening slot, ~6:30–7:15 PM'] },
   // { name: 'Luxury Mini Yacht', type: 'Luxury Yacht', price: 5999, discountPrice: 4999, rating: 4.7,
   //   duration: '1.5 hr', image: '/images/boats/boat3.jpg', description: 'Luxury yacht ride for special occasions.',
   //   highlights: ['Premium yacht for anniversaries & celebrations', 'Seating & refreshments on board', 'Can be combined with Ganga Aarti timing', 'Advance booking recommended'] }
@@ -111,12 +109,12 @@ const boats = [
 const initialPlaces = [
   {
     slug: 'ganga-aarti',
-    name: 'Ganga Aarti at Assi Ghat',
+    name: 'Ganga Aarti at Dashashwamedh Ghat',
     image: '/images/places/gangaaartiD.jpg',
     short: 'The evening ritual of fire, chanting and music on the banks of the Ganga.',
     distance: '2.5 km from The Kashi Kunj',
     highlights: [
-      'Held every evening at Assi Ghat, just after sunset',
+      'Held every evening at Dashashwamedh Ghat, just after sunset',
       'Best experienced from a private boat on the river',
       'Arrive 30–45 minutes early for a good viewing spot',
       'We arrange a private boat pickup for Aarti viewing — ask our team'
@@ -196,7 +194,7 @@ const initialPlaces = [
   {
     slug: 'dashashwamedh-ghat',
     name: 'Dashashwamedh Ghat',
-    image: '/images/places/dasha.jpg',
+    image: '/images/places/gangaaartiD.jpg',
     short: 'The main ghat of Varanasi and the venue for the famous evening Ganga Aarti.',
     distance: '2.5 km from The Kashi Kunj',
     highlights: [
@@ -206,34 +204,6 @@ const initialPlaces = [
       'Surrounded by markets, food stalls & boat operators'
     ],
     order: 7
-  },
-   {
-    slug: 'kashi-vishwanth-temple',
-    name: 'Kashi Vishwanth Temple',
-    image: '/images/places/kashivis.jpg',
-    short: 'The most famous temple in Varanasi, dedicated to Lord Shiva, and a major pilgrimage site.',
-    distance: '2 km from The Kashi Kunj',
-    highlights: [
-      'One of the twelve Jyotirlingas in India',
-      'Best visited early morning or late evening to avoid crowds',
-      'Photography is not allowed inside the temple premises',
-      'Combine with a visit to nearby ghats and markets'
-    ],
-    order: 8
-  },
-   {
-    slug: 'sankatmochan-temple',
-    name: 'Sankatmochan Temple',
-    image: '/images/places/sankatmochan.jpeg',
-    short: 'A popular temple dedicated to Lord Hanuman, known for its spiritual significance.',
-    distance: '1.5 km from The Kashi Kunj',
-    highlights: [
-      'Popular for its spiritual significance',
-      'Known for its beautiful architecture',
-      'Frequented by devotees from all over the world',
-      'Combine with a visit to nearby ghats and markets'
-    ],
-    order: 9
   }
 ];
 

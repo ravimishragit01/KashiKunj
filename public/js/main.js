@@ -166,7 +166,7 @@ if ($('#placesGrid').length) {
     const badgeText =
       item.type || (type === "cab" ? "Chauffeur Driven" : "Ganges Cruise");
     const actionText = type === "cab" ? "Book Ride" : "Book Boat";
-    const priceUnit = "/trip";
+    const priceUnit = "/person";
 
     // Highlight tags specific to service type
     const tagsHtml =
@@ -194,7 +194,7 @@ if ($('#placesGrid').length) {
           </h3>
 
           <div class="tags-container">
-            ${tagsHtml}
+            ${item.tagsHtml? item.tagsHtml : tagsHtml}
           </div>
 
           <div class="card-footer-row">

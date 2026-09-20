@@ -5,6 +5,7 @@ const boatSchema = new mongoose.Schema({
   type: { type: String, required: true }, // Motor Boat, Luxury Yacht, Bajra
   price: { type: Number, required: true },
   discountPrice: { type: Number },
+  tagsHtml: { type: String }, // HTML string for tags
   duration: String, // 1 hr, 45 min
   image: String,
   images: [{ type: String }], // Array of gallery photos
