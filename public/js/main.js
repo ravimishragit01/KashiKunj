@@ -54,31 +54,33 @@ $(function () {
   });
   startAutoplay();
 
-// ================= PLACES TO VISIT (HOMEPAGE DYNAMIC LOAD) =================
-if ($('#placesGrid').length) {
-  const $pg =$('#placesGrid');
-  $pg.html(renderLoader('Loading top attractions...'));
+  // ================= PLACES TO VISIT (HOMEPAGE DYNAMIC LOAD) =================
+  if ($("#placesGrid").length) {
+    const $pg = $("#placesGrid");
+    $pg.html(renderLoader("Loading top attractions..."));
 
-  $.get('/api/places', function (places) {
-    $pg.empty();
-    if (!places || !places.length) {
-      $pg.html('<p class="no-data">No attractions listed currently.</p>');
-      return;
-    }
+    $.get("/api/places", function (places) {
+      $pg.empty();
+      if (!places || !places.length) {
+        $pg.html('<p class="no-data">No attractions listed currently.</p>');
+        return;
+      }
 
-    // Display first 6 attractions on the homepage
-    places.slice(0, 6).forEach(function (p) {
-      $pg.append(`
+      // Display first 6 attractions on the homepage
+      places.slice(0, 6).forEach(function (p) {
+        $pg.append(`
         <a class="attraction-card" href="place-detail.html?slug=${p.slug}">
           <img src="${p.image}" alt="${p.name}" loading="lazy">
           <p>${p.name}</p>
         </a>
       `);
+      });
+    }).fail(function () {
+      $pg.html(
+        '<p class="loading-error">Could not load attractions. Please check your connection.</p>',
+      );
     });
-  }).fail(function () {
-    $pg.html('<p class="loading-error">Could not load attractions. Please check your connection.</p>');
-  });
-}
+  }
 
   // ================= ENRICHED RATINGS & CARDS =================
   function ratingStars(r) {
@@ -194,7 +196,7 @@ if ($('#placesGrid').length) {
           </h3>
 
           <div class="tags-container">
-            ${item.tagsHtml? item.tagsHtml : tagsHtml}
+            ${item.tagsHtml ? item.tagsHtml : tagsHtml}
           </div>
 
           <div class="card-footer-row">
@@ -431,52 +433,55 @@ if ($('#placesGrid').length) {
   });
 
   // ================= FORM DATES DYNAMIC TOGGLE =================
-function syncDateFields() {
-  const selectedTypes = $('#svcTypeGroup input:checked').map(function () {
-    return this.value;
-  }).get();
+  function syncDateFields() {
+    const selectedTypes = $("#svcTypeGroup input:checked")
+      .map(function () {
+        return this.value;
+      })
+      .get();
 
-  const isOnlyBoat = selectedTypes.length === 1 && selectedTypes[0] === 'boat';
-  const hasRoom = selectedTypes.includes('room');
+    const isOnlyBoat =
+      selectedTypes.length === 1 && selectedTypes[0] === "boat";
+    const hasRoom = selectedTypes.includes("room");
 
-  if (isOnlyBoat) {
-    // Hide both dates completely and make non-mandatory
-    $('#checkInRow, #checkOutRow').hide();
-    $('#checkIn, #checkOut').prop('required', false).val('');
-  } else if (hasRoom) {
-    // Room stay selected: both Check-in and Check-out are required
-    $('#checkInRow, #checkOutRow').show();
-    $('#checkInLabel').text('Check-in Date *');
-    $('#checkOutLabel').text('Check-out Date *');
-    $('#checkIn, #checkOut').prop('required', true);
-  } else {
-    // Cab or Tour only: Single travel date needed
-    $('#checkInRow').show();
-    $('#checkInLabel').text('Travel / Pickup Date *');
-    $('#checkIn').prop('required', true);
+    if (isOnlyBoat) {
+      // Hide both dates completely and make non-mandatory
+      $("#checkInRow, #checkOutRow").hide();
+      $("#checkIn, #checkOut").prop("required", false).val("");
+    } else if (hasRoom) {
+      // Room stay selected: both Check-in and Check-out are required
+      $("#checkInRow, #checkOutRow").show();
+      $("#checkInLabel").text("Check-in Date *");
+      $("#checkOutLabel").text("Check-out Date *");
+      $("#checkIn, #checkOut").prop("required", true);
+    } else {
+      // Cab or Tour only: Single travel date needed
+      $("#checkInRow").show();
+      $("#checkInLabel").text("Travel / Pickup Date *");
+      $("#checkIn").prop("required", true);
 
-    $('#checkOutRow').hide();
-    $('#checkOut').prop('required', false).val('');
+      $("#checkOutRow").hide();
+      $("#checkOut").prop("required", false).val("");
+    }
   }
-}
 
-// 1. Checkbox toggle event
-$(document).on('change', '#svcTypeGroup input[type="checkbox"]', function () {
+  // 1. Checkbox toggle event
+  $(document).on("change", '#svcTypeGroup input[type="checkbox"]', function () {
+    syncDateFields();
+  });
+
+  // 2. Remove tag event
+  $(document).on("click", ".remove-tag", function () {
+    setTimeout(syncDateFields, 50);
+  });
+
+  // 3. Card "Book Now" click event
+  $(document).on("click", ".book-btn", function () {
+    setTimeout(syncDateFields, 50);
+  });
+
+  // 4. Initial call on page ready
   syncDateFields();
-});
-
-// 2. Remove tag event
-$(document).on('click', '.remove-tag', function () {
-  setTimeout(syncDateFields, 50);
-});
-
-// 3. Card "Book Now" click event
-$(document).on('click', '.book-btn', function () {
-  setTimeout(syncDateFields, 50);
-});
-
-// 4. Initial call on page ready
-syncDateFields();
   // ================= PROMO BANNER COMBO CLICK =================
   $(document).on("click", ".promo-btn-main", function (e) {
     e.preventDefault();

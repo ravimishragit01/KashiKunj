@@ -1,40 +1,40 @@
 // js/diwali.js
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('fireworksCanvas');
+document.addEventListener("DOMContentLoaded", () => {
+  const canvas = document.getElementById("fireworksCanvas");
   if (!canvas) return;
-  
-  const ctx = canvas.getContext('2d');
+
+  const ctx = canvas.getContext("2d");
 
   function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
-  window.addEventListener('resize', resize);
+  window.addEventListener("resize", resize);
   resize();
 
   const particles = [];
   const rockets = [];
 
   const colors = [
-    { r: 255, g: 215, b: 0 },   // Gold
-    { r: 255, g: 100, b: 0 },   // Orange
-    { r: 255, g: 50, b: 150 },  // Magenta
-    { r: 0, g: 200, b: 255 }    // Cyan
+    { r: 255, g: 215, b: 0 }, // Gold
+    { r: 255, g: 100, b: 0 }, // Orange
+    { r: 255, g: 50, b: 150 }, // Magenta
+    { r: 0, g: 200, b: 255 }, // Cyan
   ];
 
   class Rocket {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = canvas.height;
-      this.vx = (Math.random() - 0.5) * 1.5; 
-      this.vy = -(Math.random() * 3 + 9); 
+      this.vx = (Math.random() - 0.5) * 1.5;
+      this.vy = -(Math.random() * 3 + 9);
       this.color = colors[Math.floor(Math.random() * colors.length)];
       this.exploded = false;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      this.vy += 0.12; 
+      this.vy += 0.12;
       if (this.vy >= 0) {
         this.exploded = true;
         createBurst(this.x, this.y, this.color);
@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animate() {
     // Fade out previous frames for a trail effect on a transparent background
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'lighter'; // Makes explosions glow brightly
+    ctx.globalCompositeOperation = "lighter"; // Makes explosions glow brightly
 
     // Limit rocket frequency so it doesn't distract too much from the website
     if (Math.random() < 0.025) rockets.push(new Rocket());
