@@ -378,6 +378,45 @@ $(function () {
       $grid.html('<p class="loading-error">Could not load boats.</p>'),
     );
   }
+
+  // ================= LOAD DYNAMIC BLOG POSTS =================
+  if ($("#blogGrid").length) {
+    $.get("/api/blogs", function (blogs) {
+      const $grid = $("#blogGrid").empty();
+      if (!blogs.length)
+        return $grid.html('<p class="no-data">No articles published yet.</p>');
+
+      blogs.forEach((b) => {
+        $grid.append(`
+          <div class="card modern-card blog-card">
+            <div class="card-media">
+              <a href="blog-detail.html?slug=${b.slug}" class="card-link">
+                <img src="${b.image}" alt="${b.title}" loading="lazy">
+              </a>
+              <span class="media-badge tag-type">${b.category}</span>
+            </div>
+            <div class="card-body">
+              <div class="card-header-row">
+                <span class="card-spec">⏱️ ${b.readTime}</span>
+              </div>
+              <h3 class="card-title">
+                <a href="blog-detail.html?slug=${b.slug}">${b.title}</a>
+              </h3>
+              <p class="card-excerpt" style="font-size: 0.9rem; color: #666; margin-bottom: 16px; line-height: 1.5;">${b.excerpt}</p>
+              <div class="card-footer-row">
+                <span style="font-size: 0.85rem; color: #888;">By ${b.author}</span>
+                <a href="blog-detail.html?slug=${b.slug}" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem;">Read Article →</a>
+              </div>
+            </div>
+          </div>
+        `);
+      });
+    }).fail(() =>
+      $("#blogGrid").html(
+        '<p class="loading-error">Could not load travel articles.</p>',
+      ),
+    );
+  }
   // ================= PRE-FILL FROM DETAIL PAGE / SUBPAGES =================
   const pending = sessionStorage.getItem("kk_pending_booking");
   if (pending) {
@@ -663,31 +702,75 @@ $(function () {
     $("html, body").animate({ scrollTop: 0 }, 400);
   });
 
+  // ================= LOAD DYNAMIC REVIEWS =================
+  if ($("#testimonialGrid").length) {
+    // URL changed to /api/review to match server.js
+    $.get("/api/review", function (reviews) {
+      const $grid = $("#testimonialGrid").empty();
+
+      if (!reviews.length) {
+        return $grid.html(
+          '<p class="no-data">No reviews yet. Be the first to leave one!</p>',
+        );
+      }
+
+      reviews.forEach((review) => {
+        // Generate solid stars based on the rating number
+        const starIcons =
+          "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+
+        $grid.append(`
+          <div class="testimonial-card">
+            <div class="stars">${starIcons}</div>
+            <p>"${review.text}"</p>
+            <div class="guest-author">
+              <div class="guest-avatar">${review.initial}</div>
+              <div>
+                <strong>${review.guestName}</strong>
+                <span>${review.location}</span>
+              </div>
+            </div>
+          </div>
+        `);
+      });
+    }).fail(() =>
+      $("#testimonialGrid").html(
+        '<p class="loading-error">Could not load guest experiences.</p>',
+      ),
+    );
+  }
+
   // ================= LEAFLET NEIGHBORHOOD MAP =================
-  if ($('#kashiMap').length) {
+  if ($("#kashiMap").length) {
     // 1. Initialize map and coordinates
     const kashiKunjCoords = [25.28845019067022, 83.00495935321072];
     const assiCoords = [25.2881, 83.0071]; // Assi Ghat Coordinates
-    
-    const map = L.map('kashiMap', { scrollWheelZoom: false }).setView(kashiKunjCoords, 17);
+
+    const map = L.map("kashiMap", { scrollWheelZoom: false }).setView(
+      kashiKunjCoords,
+      17,
+    );
 
     // 2. Load 100% Free OpenStreetMap tiles
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
     }).addTo(map);
 
     // 3. Custom Glowing Orange Marker for The Kashi Kunj
     const kkIcon = L.divIcon({
-      className: 'custom-div-icon',
+      className: "custom-div-icon",
       html: '<div class="kk-marker"></div>',
       iconSize: [20, 20],
-      iconAnchor: [10, 10]
+      iconAnchor: [10, 10],
     });
 
     // NOTE: { autoClose: false, closeOnClick: false } keeps the popup permanently open
-    L.marker(kashiKunjCoords, { icon: kkIcon }).addTo(map)
-      .bindPopup(`
+    L.marker(kashiKunjCoords, { icon: kkIcon })
+      .addTo(map)
+      .bindPopup(
+        `
         <div style="min-width: 210px; line-height: 1.6;">
           <b style="font-size: 1.1rem; color: #d97b06;">The Kashi Kunj</b><br>
           <span style="font-size: 0.9rem; color: #444;">
@@ -695,48 +778,73 @@ $(function () {
             🚶‍♂️ <b>Assi Ghat:</b> 30 meters (&lt; 1 min walk)<br>
           </span>
         </div>
-      `, { autoClose: false, closeOnClick: false }) 
+      `,
+        { autoClose: false, closeOnClick: false },
+      )
       .openPopup();
 
     // 4. Custom Glowing Blue Marker for Assi Ghat
     const assiIcon = L.divIcon({
-      className: 'custom-div-icon',
+      className: "custom-div-icon",
       html: '<div class="assi-marker"></div>',
       iconSize: [18, 18],
-      iconAnchor: [9, 9]
+      iconAnchor: [9, 9],
     });
 
-    L.marker(assiCoords, { icon: assiIcon }).addTo(map)
-      .bindPopup(`<b style="color: #3b82f6; font-size: 1.05rem;">Assi Ghat</b>`, { autoClose: false, closeOnClick: false })
+    L.marker(assiCoords, { icon: assiIcon })
+      .addTo(map)
+      .bindPopup(
+        `<b style="color: #3b82f6; font-size: 1.05rem;">Assi Ghat</b>`,
+        { autoClose: false, closeOnClick: false },
+      )
       .openPopup(); // Opens simultaneously with The Kashi Kunj
 
     // 5. Other Landmarks (Blue for Temples, Red for Food)
     const landmarks = [
-      { coords: [25.2878, 83.0073], name: "Pizzeria Vaatika Cafe", color: "#ef4444" },
-      { coords: [25.3108, 83.0107], name: "Kashi Vishwanath Temple", color: "#3b82f6" },
-      { coords: [25.2905, 83.0060], name: "Tulsi Manas Temple", color: "#3b82f6" }
+      {
+        coords: [25.2878, 83.0073],
+        name: "Pizzeria Vaatika Cafe",
+        color: "#ef4444",
+      },
+      {
+        coords: [25.3108, 83.0107],
+        name: "Kashi Vishwanath Temple",
+        color: "#3b82f6",
+      },
+      {
+        coords: [25.2905, 83.006],
+        name: "Tulsi Manas Temple",
+        color: "#3b82f6",
+      },
     ];
 
-    landmarks.forEach(lm => {
+    landmarks.forEach((lm) => {
       const markerHtml = `<div style="background-color: ${lm.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`;
-      const icon = L.divIcon({ className: '', html: markerHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
-      L.marker(lm.coords, { icon: icon }).addTo(map).bindPopup(`<b>${lm.name}</b>`);
+      const icon = L.divIcon({
+        className: "",
+        html: markerHtml,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+      });
+      L.marker(lm.coords, { icon: icon })
+        .addTo(map)
+        .bindPopup(`<b>${lm.name}</b>`);
     });
 
     // 6. Draw Walking Route to Assi Ghat (Tracing the road)
     const walkingRoute = [
-      kashiKunjCoords,             // Start: The Kashi Kunj
-      [25.28840, 83.00560],        // Waypoint 1: First bend on the street
-      [25.28825, 83.00640],        // Waypoint 2: Following Assi Ghat Road
-      assiCoords                   // Destination: Assi Ghat
+      kashiKunjCoords, // Start: The Kashi Kunj
+      [25.2884, 83.0056], // Waypoint 1: First bend on the street
+      [25.28825, 83.0064], // Waypoint 2: Following Assi Ghat Road
+      assiCoords, // Destination: Assi Ghat
     ];
 
     L.polyline(walkingRoute, {
-      color: '#d97b06', 
+      color: "#d97b06",
       weight: 4,
       opacity: 0.8,
-      dashArray: '8, 8', 
-      lineJoin: 'round'
+      dashArray: "8, 8",
+      lineJoin: "round",
     }).addTo(map);
   }
 });

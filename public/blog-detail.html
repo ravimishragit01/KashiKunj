@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Article | The Kashi Kunj</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <p>Direct Booking | Most Trusted Stay, Cab &amp; Boat Partner in Varanasi</p>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">The Kashi<span>Kunj</span></a>
+            <ul class="nav-links">
+                <li><a href="rooms.html">Stays</a></li>
+                <li><a href="cabs.html">Cab</a></li>
+                <li><a href="boats.html">Boat Ride</a></li>
+                <li><a href="places.html">Things to Do</a></li>
+                <li><a href="index.html#blog">Blog</a></li>
+                <li><a href="index.html#contact" class="btn-nav">Book Now</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">&#9776;</div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb" style="max-width: 900px; margin: 20px auto; padding: 0 20px;">
+        <a href="index.html">Home</a> / <a href="index.html#blog">Blog</a> / <span id="breadcrumbTitle">Article</span>
+    </div>
+
+    <main class="section" style="padding-top: 10px;">
+        <div id="blogDetailContent"
+            style="max-width: 900px; margin: 0 auto; background: #fff; padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+            <div class="loader-container">
+                <div class="spinner"></div>
+                <p class="loader-text">Loading article...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p class="copyright">© The Kashi Kunj 2026. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function () {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+
+            if (!slug) {
+                $('#blogDetailContent').html('<p class="error">Article not specified.</p>');
+                return;
+            }
+
+            $.get(`/api/blogs/${slug}`)
+                .done(function (blog) {
+                    document.title = `${blog.title} | The Kashi Kunj Blog`;
+                    $('#breadcrumbTitle').text(blog.title);
+
+                    $('#blogDetailContent').html(`
+          <span class="badge" style="background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">${blog.category}</span>
+          <h1 style="font-size: 2.2rem; margin: 15px 0 10px; color: var(--dark);">${blog.title}</h1>
+          <p style="color: #777; margin-bottom: 25px; font-size: 0.9rem;">Published by ${blog.author} • ⏱️ ${blog.readTime}</p>
+          
+          <div style="border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; max-height: 450px;">
+            <img src="${blog.image}" alt="${blog.title}" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+
+          <div class="blog-body-content" style="line-height: 1.8; font-size: 1.05rem; color: var(--text);">
+            ${blog.content}
+          </div>
+
+          <div style="margin-top: 50px; padding: 30px; background: #fdfbf7; border-radius: var(--radius); border: 1px solid var(--border-light); text-align: center;">
+            <h3 style="margin-bottom: 10px;">Ready to Experience Kashi?</h3>
+            <p style="color: #666; margin-bottom: 20px;">Book your stay steps away from Assi Ghat and secure your private boat ride today.</p>
+            <a href="index.html#contact" class="btn-primary">Book Your Stay &amp; Boat Now →</a>
+          </div>
+        `);
+                })
+                .fail(() => {
+                    $('#blogDetailContent').html('<p class="error">Article could not be found.</p>');
+                });
+        });
+    </script>
+</body>
+
+</html>

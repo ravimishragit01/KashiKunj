@@ -6,6 +6,8 @@ const Cab = require("./models/Cab");
 const Boat = require("./models/Boat");
 const Ad = require("./models/Ad");
 const Place = require("./models/Place");
+const Review = require("./models/Review"); // 1. Add the Review model
+const Blog = require("./models/Blog"); // Import Blog model
 
 // 2. Add sample ad data:
 const sampleAds = [
@@ -349,7 +351,91 @@ const initialPlaces = [
     order: 9,
   },
 ];
+// 2. Add sample reviews:
+const sampleReviews = [
+  {
+    guestName: "Ramesh Sharma",
+    location: "Delhi",
+    initial: "R", // Explicitly added here
+    rating: 5,
+    text: "Very comfortable stay, walking distance from the ghats. The boat ride they arranged for Ganga Aarti was the highlight of our trip.",
+    isApproved: true
+  },
+  {
+    guestName: "Priya Kulkarni",
+    location: "Mumbai",
+    initial: "P", // Explicitly added here
+    rating: 5,
+    text: "Clean rooms, friendly staff, and the cab booking was hassle-free for our Sarnath trip. Highly recommend The Kashi Kunj.",
+    isApproved: true
+  },
+  {
+    guestName: "Arjun Nair",
+    location: "Bengaluru",
+    initial: "A", // Explicitly added here
+    rating: 5,
+    text: "Great location on the main road, making auto and cab transit super easy. Instant WhatsApp replies made everything smooth.",
+    isApproved: true
+  }
+];
 
+const sampleBlogs = [
+  {
+    title: "Ultimate 2-Day Varanasi Itinerary: Spiritual Awakening & Heritage",
+    slug: "ultimate-2-day-varanasi-itinerary",
+    image: "/images/places/gangaaartiD.jpg",
+    category: "Itinerary",
+    readTime: "6 min read",
+    excerpt: "Discover how to spend 48 hours in the spiritual capital of India, from dawn boat rides at Assi Ghat to evening Ganga Aarti.",
+    content: `
+      <h3>Day 1: The Sacred River & Ancient Alleys</h3>
+      <p><strong>5:30 AM - Sunrise Boat Ride at Assi Ghat:</strong> Begin your Kashi journey right where the morning comes alive. Taking a rowing boat from Assi Ghat allows you to witness the chanting, yoga sessions, and the breathtaking colors of dawn over the Ganges.</p>
+      <p><strong>9:00 AM - Traditional Banarasi Breakfast:</strong> Savor hot Kachori-Sabzi and sweet Jalebis in the narrow lanes (galis) near Godowlia.</p>
+      <p><strong>5:00 PM - Evening Ganga Aarti:</strong> Head to Dashashwamedh Ghat or experience it comfortably from a private boat on the river to watch the synchronized ritual of fire and hymns.</p>
+      
+      <h3>Day 2: Temples & Historic Excursions</h3>
+      <p><strong>7:00 AM - Kashi Vishwanath Darshan:</strong> Visit the sacred corridor early in the morning to beat the rush.</p>
+      <p><strong>11:00 AM - Half-Day Trip to Sarnath:</strong> Take a comfortable air-conditioned cab to Sarnath, where Buddha delivered his first sermon.</p>
+    `,
+    order: 1
+  },
+  {
+    title: "Differences Between Dashashwamedh and Assi Ghat: Where Should You Stay?",
+    slug: "dashashwamedh-vs-assi-ghat",
+    image: "/images/places/assi.jpg",
+    category: "Guide",
+    readTime: "4 min read",
+    excerpt: "Planning a trip to Kashi? Understand the vibe difference between the bustling Dashashwamedh Ghat and the peaceful Assi Ghat.",
+    content: `
+      <p>Varanasi's riverfront is lined with 84 ghats, but two stand out as the primary cultural hubs: <strong>Assi Ghat</strong> and <strong>Dashashwamedh Ghat</strong>.</p>
+      <h3>Assi Ghat: The Cultural & Peaceful Hub</h3>
+      <p>Located at the southern end, Assi Ghat is famous for its morning <em>Subah-e-Banaras</em> program, yoga sessions, and calmer atmosphere. It is directly accessible via wide main roads, making it ideal for families and travelers carrying luggage who want to avoid chaotic crowds.</p>
+      <h3>Dashashwamedh Ghat: The Heart of Rituals</h3>
+      <p>This is the main commercial and spiritual center where the grand evening Aarti takes place every single day. While vibrant and energetic, the surrounding lanes are extremely narrow and vehicle-free.</p>
+      <p><strong>Pro Tip:</strong> Staying near Assi Ghat (at properties like The Kashi Kunj) gives you peaceful rest at night while keeping you just minutes away from all major attractions.</p>
+    `,
+    order: 2
+  },
+  {
+    title: "How to Book the Best Ganga Aarti Boat Ride in Varanasi",
+    slug: "how-to-book-best-ganga-aarti-boat",
+    image: "/images/places/dasha.jpg",
+    category: "Boat Tours",
+    readTime: "5 min read",
+    excerpt: "Avoid tourist traps and crowded wooden planks. Here is your complete guide to booking a safe, scenic private boat for the Ganga Aarti.",
+    content: `
+      <p>Watching the glowing oil lamps float down the Ganges during the evening Aarti is a life-changing experience—provided you have the right vantage point.</p>
+      <h3>Why Private Boats Beat Crowded Platforms</h3>
+      <p>Standing on the shore at Dashashwamedh Ghat can get overwhelmingly crowded. Renting a private rowing or motor boat from Assi Ghat lets you cruise gently up to the ceremony, giving you a front-row, unobstructed view without getting jostled by crowds.</p>
+      <h3>What to Look For When Booking</h3>
+      <ul>
+        <li><strong>Life Jackets:</strong> Ensure your boat operator provides clean safety equipment.</li>
+        <li><strong>Transparent Pricing:</strong> Avoid street-side touts who inflate prices at sunset. Booking directly through your trusted accommodation ensures fixed, honest tariffs.</li>
+      </ul>
+    `,
+    order: 3
+  }
+];
 (async () => {
   await mongoose.connect(
     process.env.MONGO_URI || "mongodb://127.0.0.1:27017/kashikunj",
@@ -359,11 +445,15 @@ const initialPlaces = [
   await Place.deleteMany({});
   await Ad.deleteMany({});
   await Boat.deleteMany({});
+  await Review.deleteMany({});
+  await Blog.deleteMany({});
   await Room.insertMany(rooms);
   await Cab.insertMany(cabs);
   await Ad.insertMany(sampleAds);
   await Boat.insertMany(boats);
   await Place.insertMany(initialPlaces);
+  await Review.insertMany(sampleReviews);
+  await Blog.insertMany(sampleBlogs);
   console.log("Seed data inserted successfully");
   process.exit();
 })();
