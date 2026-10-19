@@ -594,19 +594,25 @@
   </section>
 
   <!-- ================= KASHI TRAVEL BLOG ================= -->
-  <section class="section alt" id="blog">
-    <div class="section-header">
-      <p class="eyebrow">Kashi Travel Guide</p>
-      <h2>Latest Articles & Tips</h2>
-      <p class="section-sub">Expert itineraries, ghat comparisons, and local secrets to plan your perfect pilgrimage</p>
+<section class="section alt" id="blog">
+  <div class="section-header">
+    <p class="eyebrow">Kashi Travel Guide</p>
+    <h2>Latest Articles &amp; Tips</h2>
+    <p class="section-sub">Expert itineraries, ghat comparisons, and local secrets to plan your perfect pilgrimage</p>
+  </div>
+  
+  <div class="card-grid" id="blogGrid">
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p class="loader-text">Loading travel articles...</p>
     </div>
-    <div class="card-grid" id="blogGrid">
-      <div class="loader-container">
-        <div class="spinner"></div>
-        <p class="loader-text">Loading travel articles...</p>
-      </div>
-    </div>
-  </section>
+  </div>
+
+  <!-- Hidden by default, shown via JavaScript if blog count > 3 -->
+  <div class="view-all-wrap" id="blogViewAll" style="display:none; margin-top: 40px;">
+    <a href="blogs.html" class="btn-primary btn-outline">Explore All Blogs →</a>
+  </div>
+</section>
 
   <!-- ================= FAQ ================= -->
   <section class="section">

@@ -434,6 +434,36 @@ const sampleBlogs = [
       </ul>
     `,
     order: 3
+  },
+  {
+    title: "The Ultimate 1-Day Varanasi Itinerary (Sunrise to Aarti)",
+    slug: "ultimate-1-day-varanasi-itinerary",
+    image: "/images/places/gangaaartiD.jpg",
+    category: "Itinerary",
+    readTime: "5 min read",
+    excerpt: "Short on time? Here is the exact blueprint to experience the spiritual heart of Kashi in 24 hours.",
+    content: `...`, // paste HTML content here
+    order: 4
+  },
+  {
+    title: "The Perfect 3-Day Varanasi & Sarnath Itinerary",
+    slug: "perfect-3-day-varanasi-itinerary",
+    image: "/images/places/sarnath.jpg",
+    category: "Itinerary",
+    readTime: "8 min read",
+    excerpt: "Dive deep into the spiritual, historical, and culinary dimensions of Kashi with this immersive 3-day travel plan.",
+    content: `...`, // paste HTML content here
+    order: 5
+  },
+  {
+    title: "Top 5 Street Foods You Must Try in Varanasi",
+    slug: "top-5-street-foods-in-varanasi",
+    image: "/images/places/assi.jpg",
+    category: "Food & Culture",
+    readTime: "4 min read",
+    excerpt: "From winter-special Malaiyo to spicy Tamatar Chaat, here are the iconic culinary delights of the holy city.",
+    content: `...`, // paste HTML content here
+    order: 6
   }
 ];
 (async () => {

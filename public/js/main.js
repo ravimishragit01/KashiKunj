@@ -379,14 +379,14 @@ $(function () {
     );
   }
 
-  // ================= LOAD DYNAMIC BLOG POSTS =================
-  if ($("#blogGrid").length) {
-    $.get("/api/blogs", function (blogs) {
-      const $grid = $("#blogGrid").empty();
-      if (!blogs.length)
-        return $grid.html('<p class="no-data">No articles published yet.</p>');
-
-      blogs.forEach((b) => {
+// ================= LOAD DYNAMIC BLOG POSTS (Homepage) =================
+  if ($('#blogGrid').length) {
+    $.get('/api/blogs', function (blogs) {
+      const $grid =$('#blogGrid').empty();
+      if (!blogs.length) return $grid.html('<p class="no-data">No articles published yet.</p>');
+      
+      // Show only the first 3 blogs on the homepage
+      blogs.slice(0, 3).forEach(b => {
         $grid.append(`
           <div class="card modern-card blog-card">
             <div class="card-media">
@@ -411,12 +411,14 @@ $(function () {
           </div>
         `);
       });
-    }).fail(() =>
-      $("#blogGrid").html(
-        '<p class="loading-error">Could not load travel articles.</p>',
-      ),
-    );
-  }
+
+      // Show the "Explore All Blogs" button if there are more than 3 articles
+      if (blogs.length > 3) {
+        $('#blogViewAll').show();
+      }
+
+    }).fail(() => $('#blogGrid').html('<p class="loading-error">Could not load travel articles.</p>'));
+  }  
   // ================= PRE-FILL FROM DETAIL PAGE / SUBPAGES =================
   const pending = sessionStorage.getItem("kk_pending_booking");
   if (pending) {

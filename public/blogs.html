@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Articles & Guides | The Kashi Kunj</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <p>Direct Booking | Most Trusted Stay, Cab &amp; Boat Partner in Varanasi</p>
+  </div>
+</header>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">The Kashi<span>Kunj</span></a>
+    <ul class="nav-links">
+      <li><a href="rooms.html">Stays</a></li>
+      <li><a href="cabs.html">Cab</a></li>
+      <li><a href="boats.html">Boat Ride</a></li>
+      <li><a href="places.html">Things to Do</a></li>
+      <li><a href="blogs.html">Blog</a></li>
+      <li><a href="index.html#contact" class="btn-nav">Book Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+  </div>
+</nav>
+
+<div class="breadcrumb" style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
+  <a href="index.html">Home</a> / <span>Travel Blog</span>
+</div>
+
+<section class="section" style="padding-top: 10px;">
+  <div class="section-header">
+    <p class="eyebrow">Kashi Travel Guides</p>
+    <h2>All Articles &amp; Itineraries</h2>
+    <p class="section-sub">Explore our full collection of travel tips, ghat guides, and pilgrimage insights.</p>
+  </div>
+  
+  <div class="card-grid" id="allBlogsGrid">
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p class="loader-text">Loading all articles...</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-bottom">
+    <p class="copyright">© The Kashi Kunj 2026. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(function () {
+    // Fetch and render all blogs on this dedicated page
+    $.get('/api/blogs', function (blogs) {
+      const $grid =$('#allBlogsGrid').empty();
+      if (!blogs.length) return $grid.html('<p class="no-data">No articles published yet.</p>');
+      
+      blogs.forEach(b => {
+        $grid.append(`
+          <div class="card modern-card blog-card">
+            <div class="card-media">
+              <a href="blog-detail.html?slug=${b.slug}" class="card-link">
+                <img src="${b.image}" alt="${b.title}" loading="lazy">
+              </a>
+              <span class="media-badge tag-type">${b.category}</span>
+            </div>
+            <div class="card-body">
+              <div class="card-header-row">
+                <span class="card-spec">⏱️ ${b.readTime}</span>
+              </div>
+              <h3 class="card-title">
+                <a href="blog-detail.html?slug=${b.slug}">${b.title}</a>
+              </h3>
+              <p class="card-excerpt" style="font-size: 0.9rem; color: #666; margin-bottom: 16px; line-height: 1.5;">${b.excerpt}</p>
+              <div class="card-footer-row">
+                <span style="font-size: 0.85rem; color: #888;">By ${b.author}</span>
+                <a href="blog-detail.html?slug=${b.slug}" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem;">Read Article →</a>
+              </div>
+            </div>
+          </div>
+        `);
+      });
+    }).fail(() => $('#allBlogsGrid').html('<p class="loading-error">Could not load articles.</p>'));
+  });
+</script>
+</body>
+</html>
