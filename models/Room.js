@@ -4,6 +4,7 @@ const roomSchema = new mongoose.Schema({
   name: { type: String, required: true },
   type: { type: String, required: true }, // Deluxe, Super Deluxe, Suite
   price: { type: Number, required: true },
+  order: { type: Number, default: 0 }, // Lower numbers show first
   discountPrice: { type: Number },
   capacity: { type: Number, default: 2 },
   amenities: [String], // WiFi, AC, Parking, Geyser, TV

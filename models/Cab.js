@@ -4,6 +4,7 @@ const cabSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Swift Dzire, Ertiga, Innova Crysta
   type: { type: String, required: true }, // Airport Drop, Full Day, Outstation
   price: { type: Number, required: true },
+   order: { type: Number, default: 0 }, // Lower numbers show first
   discountPrice: { type: Number },
   seats: { type: Number, default: 4 },
   image: String,

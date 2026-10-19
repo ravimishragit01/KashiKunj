@@ -5,6 +5,7 @@ const boatSchema = new mongoose.Schema(
     name: { type: String, required: true }, // Dashashwamedh Ghat Ride, Sunrise Boat
     type: { type: String, required: true }, // Motor Boat, Luxury Yacht, Bajra
     price: { type: Number, required: true },
+     order: { type: Number, default: 0 }, // Lower numbers show first
     discountPrice: { type: Number },
     tagsHtml: { type: String }, // HTML string for tags
     duration: String, // 1 hr, 45 min

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Boat = require('../models/Boat');
 
 router.get('/', async (req, res) => {
-  const boats = await Boat.find();
+  const boats = await Boat.find().sort({ order: 1 });
   res.json(boats);
 });
 

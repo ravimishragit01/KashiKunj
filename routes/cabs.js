@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Cab = require('../models/Cab');
 
 router.get('/', async (req, res) => {
-  const cabs = await Cab.find();
+  const cabs = await Cab.find().sort({ order: 1 });
   res.json(cabs);
 });
 
