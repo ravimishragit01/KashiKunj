@@ -662,4 +662,81 @@ $(function () {
   $("#backToTop").on("click", function () {
     $("html, body").animate({ scrollTop: 0 }, 400);
   });
+
+  // ================= LEAFLET NEIGHBORHOOD MAP =================
+  if ($('#kashiMap').length) {
+    // 1. Initialize map and coordinates
+    const kashiKunjCoords = [25.28845019067022, 83.00495935321072];
+    const assiCoords = [25.2881, 83.0071]; // Assi Ghat Coordinates
+    
+    const map = L.map('kashiMap', { scrollWheelZoom: false }).setView(kashiKunjCoords, 17);
+
+    // 2. Load 100% Free OpenStreetMap tiles
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    // 3. Custom Glowing Orange Marker for The Kashi Kunj
+    const kkIcon = L.divIcon({
+      className: 'custom-div-icon',
+      html: '<div class="kk-marker"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+
+    // NOTE: { autoClose: false, closeOnClick: false } keeps the popup permanently open
+    L.marker(kashiKunjCoords, { icon: kkIcon }).addTo(map)
+      .bindPopup(`
+        <div style="min-width: 210px; line-height: 1.6;">
+          <b style="font-size: 1.1rem; color: #d97b06;">The Kashi Kunj</b><br>
+          <span style="font-size: 0.9rem; color: #444;">
+            📍 <b>Main Road Property</b> (Easy transport)<br>
+            🚶‍♂️ <b>Assi Ghat:</b> 30 meters (&lt; 1 min walk)<br>
+          </span>
+        </div>
+      `, { autoClose: false, closeOnClick: false }) 
+      .openPopup();
+
+    // 4. Custom Glowing Blue Marker for Assi Ghat
+    const assiIcon = L.divIcon({
+      className: 'custom-div-icon',
+      html: '<div class="assi-marker"></div>',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+
+    L.marker(assiCoords, { icon: assiIcon }).addTo(map)
+      .bindPopup(`<b style="color: #3b82f6; font-size: 1.05rem;">Assi Ghat</b>`, { autoClose: false, closeOnClick: false })
+      .openPopup(); // Opens simultaneously with The Kashi Kunj
+
+    // 5. Other Landmarks (Blue for Temples, Red for Food)
+    const landmarks = [
+      { coords: [25.2878, 83.0073], name: "Pizzeria Vaatika Cafe", color: "#ef4444" },
+      { coords: [25.3108, 83.0107], name: "Kashi Vishwanath Temple", color: "#3b82f6" },
+      { coords: [25.2905, 83.0060], name: "Tulsi Manas Temple", color: "#3b82f6" }
+    ];
+
+    landmarks.forEach(lm => {
+      const markerHtml = `<div style="background-color: ${lm.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`;
+      const icon = L.divIcon({ className: '', html: markerHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
+      L.marker(lm.coords, { icon: icon }).addTo(map).bindPopup(`<b>${lm.name}</b>`);
+    });
+
+    // 6. Draw Walking Route to Assi Ghat (Tracing the road)
+    const walkingRoute = [
+      kashiKunjCoords,             // Start: The Kashi Kunj
+      [25.28840, 83.00560],        // Waypoint 1: First bend on the street
+      [25.28825, 83.00640],        // Waypoint 2: Following Assi Ghat Road
+      assiCoords                   // Destination: Assi Ghat
+    ];
+
+    L.polyline(walkingRoute, {
+      color: '#d97b06', 
+      weight: 4,
+      opacity: 0.8,
+      dashArray: '8, 8', 
+      lineJoin: 'round'
+    }).addTo(map);
+  }
 });

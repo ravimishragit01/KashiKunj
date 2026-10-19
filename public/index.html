@@ -76,6 +76,12 @@
         ]
       }
     </script>
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body>
@@ -117,6 +123,7 @@
         <li><a href="#boats">Boat Ride</a></li>
         <li><a href="#things">Things to Do</a></li>
         <li><a href="#package">Tour Packages</a></li>
+        <li><a href="#location">Location</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact" class="btn-nav">Book Now</a></li>
       </ul>
@@ -586,6 +593,44 @@
       </div>
     </div>
   </section>
+  <!-- ================= NEIGHBORHOOD MAP ================= -->
+  <section class="section" id="location">
+    <div class="section-header" style="max-width: 800px;">
+      <p class="eyebrow">Prime Location</p>
+      <h2>Explore Our Neighborhood</h2>
+      <p class="section-sub" style="margin-bottom: 22px;">
+        Located in the heart of the action. Enjoy effortless transportation directly from our gate and see walking
+        routes to famous local eateries.
+      </p>
+
+      <!-- Location Highlights Strip -->
+      <div
+        style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; font-size: 0.9rem; color: var(--dark);">
+        <span
+          style="background: #fff; padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+          📍 <b>Main Road Property</b> (Easy Access)
+        </span>
+        <span
+          style="background: #fff; padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+          🚶‍♂️ <b>Assi Ghat:</b> 30 meters (&lt; 1 min walk)
+        </span>
+        <span
+          style="background: #fff; padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+          🛺 <b>Kashi Vishwanath:</b> 10 mins by auto
+        </span>
+      </div>
+    </div>
+
+    <div class="map-wrapper">
+      <div id="kashiMap"></div>
+      <div class="map-legend">
+        <div class="legend-item"><span class="legend-dot kk-dot"></span> The Kashi Kunj</div>
+        <div class="legend-item"><span class="legend-dot ghat-dot"></span> Ghats & Temples</div>
+        <div class="legend-item"><span class="legend-dot food-dot"></span> Famous Eateries</div>
+        <div class="legend-item"><span class="legend-line"></span> Walking Route</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ================= FAQ ================= -->
   <section class="section">
@@ -778,6 +823,10 @@
   <!-- jQuery CDN & App Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="js/places-data.js"></script>
+  <!-- Leaflet Map JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script src="js/main.js"></script>
   <script src="js/diwali.js"></script>
 </body>
