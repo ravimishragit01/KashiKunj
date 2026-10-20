@@ -703,7 +703,31 @@ $(function () {
   $(document).on("change", '#svcTypeGroup input[type="checkbox"]', function () {
     syncDateFields();
   });
+// ================= DATE PICKER RESTRICTIONS =================
+  // Get today's date in YYYY-MM-DD local timezone format
+  const today = new Date();
+  const todayFormatted = new Date(today.getTime() - (today.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
 
+  // Restrict past dates on load
+  $('#checkIn').attr('min', todayFormatted);
+  $('#checkOut').attr('min', todayFormatted);
+
+  // Dynamically update Check-out minimum date when Check-in changes
+  $('#checkIn').on('change', function () {
+    const selectedCheckIn = $(this).val();
+    
+    if (selectedCheckIn) {
+      $('#checkOut').attr('min', selectedCheckIn);
+      
+      // Clear the check-out field if the user picks a new check-in date that is later than the current check-out date
+      const currentCheckOut = $('#checkOut').val();
+      if (currentCheckOut && currentCheckOut < selectedCheckIn) {
+        $('#checkOut').val('');
+      }
+    } else {
+      $('#checkOut').attr('min', todayFormatted);
+    }
+  });
   // 2. Remove tag event
   $(document).on("click", ".remove-tag", function () {
     setTimeout(syncDateFields, 50);
@@ -837,11 +861,20 @@ $(function () {
       .apply($, requests)
       .done(function () {
         $("#formMsg")
+          .stop(true, true)
           .text("✅ Request saved and sent via WhatsApp!")
           .css("color", "green");
         $("#bookingForm")[0].reset();
         selectedItems = {};
         renderSelectedItems();
+
+        // remove the message after 4 seconds
+        clearTimeout(window.formMsgTimer);
+        window.formMsgTimer = setTimeout(function () {
+          $("#formMsg").fadeOut(400, function () {
+            $(this).text("").show(); // empty it, and show it again so the next message appears
+          });
+        }, 4000);
       })
       .fail(function (jqXHR) {
         console.error(
