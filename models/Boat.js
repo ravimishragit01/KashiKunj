@@ -14,8 +14,8 @@ const boatSchema = new mongoose.Schema(
     description: String,
     rating: { type: Number, default: 4.8 },
     highlights: [String], // bullet points shown on the detail page
-    totalSeats: { type: Number, default: 60 },
-    bookedSeats: { type: [String], default: [] } // e.g. ["S1", "S3"]
+    // totalSeats: { type: Number, default: 60 },
+    // bookedSeats: { type: [String], default: [] } // e.g. ["S1", "S3"]
   },
   { timestamps: true },
 );

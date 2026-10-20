@@ -12,12 +12,12 @@ const Blog = require("./models/Blog"); // Import Blog model
 // 2. Add sample ad data:
 const sampleAds = [
   // {
-  //   name: "Sunrise Ganga Aarti + Boat Combo",
-  //   description: "Book an early morning private rowing boat from Assi Ghat with hotel stay and get flat 15% off.",
+  //   name: "Dev Diwali Boat Rides - Limited Offer",
+  //   description: "Book your Dev Diwali boat ride now and enjoy a special discount for a limited time.",
   //   imageUrl: '/images/promotions/pimg1.jpeg',
   //   badge: "Limited Deal",
   //   targetLink: "#boats",
-  //   buttonText: "Claim Discount",
+  //   buttonText: "Book Boat Ride & Claim Discount",
   //   isActive: true
   // },
   {
@@ -171,7 +171,7 @@ const boats = [
     type: "Motor Boat",
     price: 2999,
     order: 1,
-    discountPrice: 2499,
+    discountPrice: 2399,
     rating: 4.9,
     duration: "3 hr",
     images: "/images/boats/boat1.jpeg",
@@ -189,9 +189,9 @@ const boats = [
   {
     name: "Dev Diwali(Maharaja Boat)",
     type: "Maharaja Boat - Best View",
-    price: 6999,
+    price: 5999,
     order: 2,
-    discountPrice: 6499,
+    discountPrice: 4999,
     rating: 4.85,
     duration: "3hr 30min",
     images: [
@@ -200,7 +200,7 @@ const boats = [
       "/images/boats/mboat3.jpeg",
     ],
     description: "Private boat for the evening Ganga Aarti view.",
-    bookedSeats: ["S2", "S5"], // Pre-seeded example of booked seats
+    // bookedSeats: ["S2", "S5"], // Pre-seeded example of booked seats
     tagsHtml:
       '<span class="feature-tag">🌅 Full Dev Diwali Events</span><span class="feature-tag">🛶 Sharing Boat</span><span class="feature-tag">🦺 Life Jackets</span><span class="feature-tag"> Best View</span>',
     highlights: [
@@ -210,9 +210,10 @@ const boats = [
       "Evening slot, ~5:00–5:15 PM start",
     ],
   },
-  // { name: 'Luxury Mini Yacht', type: 'Luxury Yacht', price: 5999, discountPrice: 4999, rating: 4.7,
-  //   duration: '1.5 hr', image: '/images/boats/boat3.jpg', description: 'Luxury yacht ride for special occasions.',
-  //   highlights: ['Premium yacht for anniversaries & celebrations', 'Seating & refreshments on board', 'Can be combined with Ganga Aarti timing', 'Advance booking recommended'] }
+  { name: 'Ganges Cruise', type: 'Luxury Cruise', price: 11999, discountPrice: 6999, rating: 4.7,
+    duration: '3.5 hr', image: '/images/boats/boat3.jpeg', description: 'Luxury yacht ride for special occasions.',
+     order: 3,
+    highlights: ['Premium yacht for anniversaries & celebrations', 'Seating & refreshments on board', 'Can be combined with Ganga Aarti timing', 'Advance booking recommended'] }
 ];
 
 const initialPlaces = [
