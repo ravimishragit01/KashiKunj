@@ -200,6 +200,7 @@ const boats = [
       "/images/boats/mboat3.jpeg",
     ],
     description: "Private boat for the evening Ganga Aarti view.",
+    bookedSeats: ["S2", "S5"], // Pre-seeded example of booked seats
     tagsHtml:
       '<span class="feature-tag">🌅 Full Dev Diwali Events</span><span class="feature-tag">🛶 Sharing Boat</span><span class="feature-tag">🦺 Life Jackets</span><span class="feature-tag"> Best View</span>',
     highlights: [

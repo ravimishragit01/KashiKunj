@@ -84,7 +84,7 @@ function loadItemDetail(type) {
             <div class="price-box">
               ${item.discountPrice ? `<del>₹${item.price}</del> <strong>₹${item.discountPrice}</strong>` : `<strong>₹${item.price}</strong>`} <span>${priceUnit}</span>
             </div>
-            <button class="btn-primary btn-full" id="bookThisBtn">Book This</button>
+            <button class="btn-primary btn-full book-btn" id="bookThisBtn" data-type="${type}" data-id="${item._id}" data-name="${item.name}">Book This</button>
             <a href="https://wa.me/916392658826?text=${encodeURIComponent('Hi, I want to know more about: ' + item.name)}" target="_blank" class="btn-whatsapp-outline">Ask on WhatsApp</a>
           </div>
         </div>
@@ -142,10 +142,24 @@ function loadItemDetail(type) {
         }
       });
 
-      // Retain existing booking flow
-      $('#bookThisBtn').on('click', function () {
-        sessionStorage.setItem('kk_pending_booking', JSON.stringify({ type, id: item._id, name: item.name }));
-        window.location.href = 'index.html#contact';
+     // ================= SMART BOOKING REDIRECT =================
+      $('#bookThisBtn').on('click', function (e) {
+        const nameStr = (item.name || '').toLowerCase();
+        const typeStr = (item.type || '').toLowerCase();
+        
+        // Check if this specific item is a premium boat
+        const isPremiumBoat = type === 'boat' && (
+          nameStr.includes('bajara') || typeStr.includes('bajara') ||
+          nameStr.includes('maharaja') || typeStr.includes('maharaja') ||
+          nameStr.includes('cruise') || typeStr.includes('cruise')
+        );
+
+        // If it is a premium boat, do nothing here (main.js will automatically open the popup).
+        // If it is a room, cab, or standard boat, force the redirect immediately so it never breaks!
+        if (!isPremiumBoat) {
+          sessionStorage.setItem('kk_pending_booking', JSON.stringify({ type, id: item._id, name: item.name }));
+          window.location.href = 'index.html#contact';
+        }
       });
     }
   });

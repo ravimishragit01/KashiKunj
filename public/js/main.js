@@ -379,14 +379,15 @@ $(function () {
     );
   }
 
-// ================= LOAD DYNAMIC BLOG POSTS (Homepage) =================
-  if ($('#blogGrid').length) {
-    $.get('/api/blogs', function (blogs) {
-      const $grid =$('#blogGrid').empty();
-      if (!blogs.length) return $grid.html('<p class="no-data">No articles published yet.</p>');
-      
+  // ================= LOAD DYNAMIC BLOG POSTS (Homepage) =================
+  if ($("#blogGrid").length) {
+    $.get("/api/blogs", function (blogs) {
+      const $grid = $("#blogGrid").empty();
+      if (!blogs.length)
+        return $grid.html('<p class="no-data">No articles published yet.</p>');
+
       // Show only the first 3 blogs on the homepage
-      blogs.slice(0, 3).forEach(b => {
+      blogs.slice(0, 3).forEach((b) => {
         $grid.append(`
           <div class="card modern-card blog-card">
             <div class="card-media">
@@ -414,11 +415,14 @@ $(function () {
 
       // Show the "Explore All Blogs" button if there are more than 3 articles
       if (blogs.length > 3) {
-        $('#blogViewAll').show();
+        $("#blogViewAll").show();
       }
-
-    }).fail(() => $('#blogGrid').html('<p class="loading-error">Could not load travel articles.</p>'));
-  }  
+    }).fail(() =>
+      $("#blogGrid").html(
+        '<p class="loading-error">Could not load travel articles.</p>',
+      ),
+    );
+  }
   // ================= PRE-FILL FROM DETAIL PAGE / SUBPAGES =================
   const pending = sessionStorage.getItem("kk_pending_booking");
   if (pending) {
@@ -450,13 +454,45 @@ $(function () {
 
   // ================= BOOK NOW -> select service + item =================
   // ================= BOOK NOW (HOMEPAGE SCROLL OR REDIRECT) =================
+  let selectedBoatSeats = {}; // Tracks selected seats for boats
   $(document).on("click", ".book-btn", function () {
     const type = $(this).data("type");
     const id = $(this).data("id");
     const name = $(this).data("name");
 
+    if (type === "boat") {
+      // Fetch fresh boat data to check live booked seats from MongoDB
+      $.get(`/api/boats/${id}`, function (boat) {
+        // 1. Check if the boat is a Maharaja Boat or a Cruise
+        const boatNameStr = (boat.name || "").toLowerCase();
+        const boatTypeStr = (boat.type || "").toLowerCase();
+        const requiresSeatSelection =
+          boatNameStr.includes("maharaja") ||
+          boatTypeStr.includes("maharaja") ||
+          boatNameStr.includes("cruise") ||
+          boatTypeStr.includes("cruise");
+
+        // 2. If it is a premium boat, open the seat map. Otherwise, book directly.
+        if (requiresSeatSelection) {
+          openSeatSelectorModal(boat);
+        } else {
+          proceedWithSelection(type, id, name, []);
+        }
+      }).fail(() => {
+        // Fallback if fetch fails
+        proceedWithSelection(type, id, name, []);
+      });
+    } else {
+      proceedWithSelection(type, id, name, []);
+    }
+  });
+
+  function proceedWithSelection(type, id, name, seats = []) {
+    const seatText = seats.length ? ` (Seats: ${seats.join(", ")})` : "";
+    const finalName = name + seatText; // Appends seats so WhatsApp gets it
+
     if ($("#contact").length) {
-      selectedItems[type] = { id, name };
+      selectedItems[type] = { id, name: finalName, rawName: name, seats };
       $(`#svcTypeGroup input[value="${type}"]`).prop("checked", true);
       renderSelectedItems();
       $("html, body").animate(
@@ -464,15 +500,172 @@ $(function () {
         500,
       );
     } else {
-      // If clicked on rooms.html, cabs.html, or boats.html, redirect to contact on index
+      // Redirect from subpages
       sessionStorage.setItem(
         "kk_pending_booking",
-        JSON.stringify({ type, id, name }),
+        JSON.stringify({ type, id, name: finalName, seats }),
       );
       window.location.href = "index.html#contact";
     }
-  });
+  }
+  // ================= INTERACTIVE BOAT SEAT SELECTOR (HORIZONTAL + ZONE PRICES) =================
+  function openSeatSelectorModal(boat) {
+    const total = boat.totalSeats || 12;
+    const booked = boat.bookedSeats || [];
+    const perTop = boat.seatsLeft || 2; // seats on the top side
+    const perBottom = boat.seatsRight || 2; // seats on the bottom side
+    const perCol = perTop + perBottom;
+    const cols = Math.ceil(total / perCol);
+    const preSelected = selectedBoatSeats[boat._id] || [];
 
+    // ---- PRICE TABLE (edit here, or override per boat with boat.prices) ----
+    const P = Object.assign(
+      {
+        riverFront: 6500,
+        riverBack: 6300,
+        middleFront: 5900,
+        middleBack: 5800,
+      },
+      boat.prices || {},
+    );
+    const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+    const zoneLabel = (name, front, back) =>
+      front === back
+        ? `${name} ${fmt(front)}`
+        : `${name} ${fmt(front)} front · ${fmt(back)} back`;
+
+    $("#seatModal").remove();
+
+    let seatNo = 1;
+    const makeSeat = (isRiver, isFront) => {
+      if (seatNo > total) return '<span class="seat-gap"></span>';
+      const id = `S${seatNo++}`;
+      const price = isRiver
+        ? isFront
+          ? P.riverFront
+          : P.riverBack
+        : isFront
+          ? P.middleFront
+          : P.middleBack;
+      const isBooked = booked.includes(id);
+      const isSelected = preSelected.includes(id);
+      let cls = "seat-btn " + (isRiver ? "river" : "middle");
+      if (isBooked) cls += " booked";
+      if (isSelected) cls += " selected";
+      const zone = `${isRiver ? "River side" : "Middle"} · ${isFront ? "Front" : "Back"}`;
+      return `<button type="button" class="${cls}" data-seat="${id}" data-price="${price}"
+              title="${id} · ${zone} · ${fmt(price)}" ${isBooked ? "disabled" : ""}>
+              <span class="seat-num">${id}</span>
+              <span class="seat-price">₹${price}</span>
+            </button>`;
+    };
+
+    // columns run back -> front (left -> right); second half of the columns = front
+    const frontStart = Math.floor(cols / 2);
+    let colsHtml = "";
+    for (let c = 0; c < cols; c++) {
+      const isFront = cols > 1 && c >= frontStart;
+      let top = "",
+        bottom = "";
+      for (let i = 0; i < perTop; i++) top += makeSeat(i === 0, isFront);
+      for (let i = 0; i < perBottom; i++)
+        bottom += makeSeat(i === perBottom - 1, isFront);
+      colsHtml += `<div class="boat-col">${top}<span class="boat-aisle"></span>${bottom}</div>`;
+    }
+
+    const modalMarkup = `
+    <div class="seat-modal-overlay" id="seatModal">
+      <div class="seat-modal-content">
+        <span class="seat-modal-close" id="closeSeatModal">&times;</span>
+        <h3 style="margin-bottom:4px;">Choose Your Seats</h3>
+        <p style="font-size:.85rem;color:#666;margin-bottom:10px;">${boat.name}</p>
+
+        <div class="boat-scroll">
+          <div class="boat-hull" style="--top:${perTop}; --bottom:${perBottom};">
+            <div class="boat-stern-label">BACK</div>
+            <div class="boat-canopy-line"></div>
+
+            <div class="boat-deck" id="seatGridContainer">
+              ${colsHtml}
+            </div>
+
+            <div class="boat-captain">
+              <span class="steer">☸</span>
+              <small>Boatman</small>
+            </div>
+            <div class="boat-bow-label">FRONT ⚑</div>
+          </div>
+        </div>
+
+        <div class="seat-legend">
+          <span><i class="legend-box legend-river"></i> ${zoneLabel("River side", P.riverFront, P.riverBack)}</span>
+          <span><i class="legend-box legend-available"></i> ${zoneLabel("Middle", P.middleFront, P.middleBack)}</span>
+          <span><i class="legend-box legend-selected"></i> Selected</span>
+          <span><i class="legend-box legend-booked"></i> Sold Out</span>
+        </div>
+
+        <p class="seat-summary">
+          Seats (<strong id="seatCount">0</strong>): <span id="seatList">-</span><br>
+          Total: <strong id="seatTotal" class="seat-total">₹0</strong>
+        </p>
+
+        <button type="button" class="btn-primary" id="confirmSeatsBtn" style="width:100%;">
+          Confirm Seats &amp; Continue →
+        </button>
+      </div>
+    </div>
+  `;
+
+    $("body").append(modalMarkup);
+
+    const getChosen = () =>
+      $("#seatGridContainer .seat-btn.selected")
+        .map(function () {
+          return $(this).data("seat");
+        })
+        .get();
+
+    const getTotal = () => {
+      let sum = 0;
+      $("#seatGridContainer .seat-btn.selected").each(function () {
+        sum += Number($(this).data("price"));
+      });
+      return sum;
+    };
+
+    const refreshSummary = () => {
+      const chosen = getChosen();
+      $("#seatCount").text(chosen.length);
+      $("#seatList").text(chosen.length ? chosen.join(", ") : "-");
+      $("#seatTotal").text(fmt(getTotal()));
+    };
+    refreshSummary();
+
+    $("#seatGridContainer").on("click", ".seat-btn:not(.booked)", function () {
+      $(this).toggleClass("selected");
+      refreshSummary();
+    });
+
+    $("#closeSeatModal").on("click", () => $("#seatModal").remove());
+    $("#seatModal").on("click", function (e) {
+      if (e.target === this) $("#seatModal").remove();
+    });
+    $(document).one("keydown.seatModal", function (e) {
+      if (e.key === "Escape") $("#seatModal").remove();
+    });
+
+    $("#confirmSeatsBtn").on("click", function () {
+      const chosen = getChosen();
+      if (!chosen.length) {
+        alert("Please select at least one seat before continuing.");
+        return;
+      }
+      const totalPrice = getTotal();
+      selectedBoatSeats[boat._id] = chosen;
+      $("#seatModal").remove();
+      proceedWithSelection("boat", boat._id, boat.name, chosen, totalPrice);
+    });
+  }
   // ================= FORM DATES DYNAMIC TOGGLE =================
   function syncDateFields() {
     const selectedTypes = $("#svcTypeGroup input:checked")

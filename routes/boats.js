@@ -22,6 +22,22 @@ router.put('/:id', async (req, res) => {
   res.json(boat);
 });
 
+// ================= NEW ROUTE FOR SEAT SELECTION ================= //
+router.put('/:id/seats', async (req, res) => {
+  try {
+    const { bookedSeats } = req.body;
+    const boat = await Boat.findByIdAndUpdate(
+      req.params.id, 
+      { bookedSeats }, 
+      { new: true }
+    );
+    res.json(boat);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+// ================================================================ //
+
 router.delete('/:id', async (req, res) => {
   await Boat.findByIdAndDelete(req.params.id);
   res.json({ success: true });
